@@ -1,6 +1,6 @@
 # galleryapp
 
-A new Flutter project.
+Изучаем Flutter: https://skill-branch.ru/flutter?rush=iDhEak
 
 ## Getting Started
 
