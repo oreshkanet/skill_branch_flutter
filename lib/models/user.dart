@@ -23,7 +23,7 @@ class User {
 
   factory User({String name, String phone, String email}) {
     if (name.isEmpty) throw Exception("User name is empty!");
-    if (phone == null || email == null || phone.isEmpty || email.isEmpty)
+    if (phone == null && email == null && phone.isEmpty && email.isEmpty)
       throw Exception("Phone or E-Mail name is empty!");
 
     return User._(
@@ -37,6 +37,8 @@ class User {
   static String _getFirstName(String userName) => userName.split(" ")[0];
 
   static String _checkPhone(String phone) {
+    if (phone == null) return null;
+
     String pattern = "^(?:[+0])?[0-9]{11}";
 
     phone = phone.replaceAll(RegExp("[^+\\d]"), "");
@@ -52,10 +54,13 @@ class User {
   }
 
   static String _checkEmail(String email) {
-    //String pattern = "^(?:+0])?[0-9]{11}";
+    if (email == null) return null;
+    String pattern = "^([\\w\\.]*)@([\\w\\.]*)\$";
 
     if (email == null || email.isEmpty) {
       throw Exception("Enter don't empty phone number");
+    } else if (!RegExp(pattern).hasMatch(email)) {
+      throw Exception("Enter a valid email");
     }
 
     return email;

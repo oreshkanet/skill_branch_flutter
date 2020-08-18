@@ -1,8 +1,8 @@
+import 'package:FlutterGalleryApp/models/user.dart';
+import 'package:FlutterGalleryApp/user_holder.dart';
+
 import 'package:flutter_test/flutter_test.dart'
     show expect, group, isA, setUp, tearDownAll, test, throwsA;
-
-import '../lib/models/user.dart';
-import '../lib/user_holder.dart';
 
 void main() {
   UserHolder holder;
@@ -144,6 +144,11 @@ void main() {
       ${user.email};
       ${user.phone};
       """,
+      """
+      Eric Freeman;
+      eric.freeman@gmail.com;
+      +1 (231) 076-1449;
+      """
     ]);
 
     expect(users[0].login, user.login);
