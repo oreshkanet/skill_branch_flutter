@@ -4,12 +4,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenImage extends StatefulWidget {
-  FullScreenImage(
-      {this.name, this.userName, this.photo, this.altDescription, Key key})
-      : super(key: key);
+  FullScreenImage({
+    this.heroTag,
+    this.name,
+    this.userName,
+    this.userPhoto,
+    this.photo,
+    this.altDescription,
+    Key key,
+  }) : super(key: key);
 
+  final String heroTag;
   final String name;
   final String userName;
+  final String userPhoto;
   final String altDescription;
   final String photo;
 
@@ -19,24 +27,42 @@ class FullScreenImage extends StatefulWidget {
   }
 }
 
-class _FullScreenImageState extends State<FullScreenImage> {
+class _FullScreenImageState extends State<FullScreenImage>
+    with TickerProviderStateMixin {
+  String heroTag;
   String name;
   String userName;
+  String userPhoto;
   String altDescription;
   String photo;
+  AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
 
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    
+    heroTag = widget.heroTag == null ? '' : widget.heroTag;
     name = widget.name == null ? '' : widget.name;
     userName = widget.userName == null ? '' : widget.userName;
+    userPhoto = widget.userPhoto == null ? '' : widget.userPhoto;
     altDescription = widget.altDescription == null ? '' : widget.altDescription;
     photo = widget.photo == null ? '' : widget.photo;
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _controller.forward().orCancel;
     return Scaffold(
       appBar: AppBar(
         title: Text('Photo', style: AppStyles.h1Black),
@@ -48,7 +74,10 @@ class _FullScreenImageState extends State<FullScreenImage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Photo(photoLink: photo),
+          Hero(
+            tag: heroTag,
+            child: Photo(photoLink: photo),
+          ),
           _buildPhotoDescription(),
           _buildPhotoMeta(),
           _buildButtons(),
@@ -74,8 +103,14 @@ class _FullScreenImageState extends State<FullScreenImage> {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
         children: [
-          UserAvatar(
-              'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4'),
+          PhotoMetaAnimation(
+            controller: _controller.view,
+            name: name,
+            userName: userName,
+            userPhoto: userPhoto,
+          )
+          /*
+          UserAvatar(avatarLink: userPhoto),
           SizedBox(width: 6),
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,6 +124,7 @@ class _FullScreenImageState extends State<FullScreenImage> {
                     style:
                         AppStyles.h5Black.copyWith(color: AppColors.manatee)),
               ]),
+              */
         ],
       ),
     );
@@ -139,6 +175,88 @@ class _FullScreenImageState extends State<FullScreenImage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class PhotoMetaAnimation extends StatelessWidget {
+  PhotoMetaAnimation({
+    Key key,
+    this.controller,
+    this.userPhoto,
+    this.name,
+    this.userName,
+  })  : opacityUserAvatar = Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.0,
+              0.500,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        opacityUserName = Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.5,
+              1.000,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        super(key: key);
+
+  final String userPhoto;
+  final String userName;
+  final String name;
+
+  final AnimationController controller;
+  final Animation<double> opacityUserAvatar;
+  final Animation<double> opacityUserName;
+
+  Widget _buildAnimation(BuildContext context, Widget child) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        children: [
+          Opacity(
+            opacity: opacityUserAvatar.value,
+            child: UserAvatar(avatarLink: userPhoto),
+          ),
+          SizedBox(width: 6),
+          Opacity(
+            opacity: opacityUserAvatar.value,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    name,
+                    style: AppStyles.h1Black,
+                  ),
+                  Text('@$userName',
+                      style:
+                          AppStyles.h5Black.copyWith(color: AppColors.manatee)),
+                ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      builder: _buildAnimation,
+      animation: controller,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _FeedState extends State<Feed> {
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Column(children: <Widget>[
-            _buildItem(),
+            _buildItem(index),
             Divider(thickness: 2, color: AppColors.mercury),
           ]);
         },
@@ -31,14 +32,31 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildItem() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Photo(photoLink: kFlutterDash),
-        _buildPhotoMeta(),
-        _buildPhotoDescription(),
-      ],
+  Widget _buildItem(int index) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FullScreenImage(
+                heroTag: 'dash' + index.toString(),
+                name: 'Денис Сайгин',
+                userName: 'oreshkanet',
+                userPhoto: 'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
+                photo: kFlutterDash,
+                altDescription:
+                    'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Hero(tag: 'dash' + index.toString(), child: Photo(photoLink: kFlutterDash)),
+          _buildPhotoMeta(),
+          _buildPhotoDescription(),
+        ],
+      ),
     );
   }
 
@@ -51,7 +69,7 @@ class _FeedState extends State<Feed> {
           Row(
             children: [
               UserAvatar(
-                  'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4'),
+                  avatarLink: 'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4'),
               SizedBox(width: 6),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

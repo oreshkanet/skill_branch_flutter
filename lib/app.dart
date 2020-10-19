@@ -1,4 +1,5 @@
 //import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:FlutterGalleryApp/screens/feed_screen.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,12 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FullScreenImage(
-          name: 'Денис Сайгин',
-          userName: 'oreshkanet',
-          photo: kFlutterDash,
-          altDescription:
-              'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
+      home: Feed()
     );
   }
 }
