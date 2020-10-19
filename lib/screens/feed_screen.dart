@@ -39,9 +39,10 @@ class _FeedState extends State<Feed> {
           context,
           MaterialPageRoute(
             builder: (context) => FullScreenImage(
-                tag: 'dash' + index.toString(),
+                heroTag: 'dash' + index.toString(),
                 name: 'Денис Сайгин',
                 userName: 'oreshkanet',
+                userPhoto: 'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
                 photo: kFlutterDash,
                 altDescription:
                     'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
@@ -68,7 +69,7 @@ class _FeedState extends State<Feed> {
           Row(
             children: [
               UserAvatar(
-                  'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4'),
+                  avatarLink: 'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4'),
               SizedBox(width: 6),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
