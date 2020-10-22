@@ -96,10 +96,12 @@ double _getOpacity(GlobalKey key, WidgetTester tester, bool isLast) {
   }
 
   if (isFadeTransition) {
-    final FadeTransition transition = tester.widgetList(finder).toList()[isLast ? 4 : 2];
+    final FadeTransition transition =
+        tester.widgetList(finder).toList()[isLast ? 4 : 2];
     return transition.opacity.value;
   } else {
-    final Opacity transition = tester.widgetList(finder).toList()[isLast ? 1 : 0];
+    final Opacity transition =
+        tester.widgetList(finder).toList()[isLast ? 1 : 0];
     return transition.opacity;
   }
 }

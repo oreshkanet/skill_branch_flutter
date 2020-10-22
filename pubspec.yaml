@@ -5,7 +5,7 @@ author: oreshkanet
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -13,7 +13,7 @@ dependencies:
 
   cupertino_icons: ^0.1.3
   cached_network_image: any
-
+  
 
 dev_dependencies:
   flutter_test:

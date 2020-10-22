@@ -1,5 +1,7 @@
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
+//import '../res/res.dart';
+//import '../widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +47,7 @@ class _FullScreenImageState extends State<FullScreenImage>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    
+
     heroTag = widget.heroTag == null ? '' : widget.heroTag;
     name = widget.name == null ? '' : widget.name;
     userName = widget.userName == null ? '' : widget.userName;
@@ -233,7 +235,7 @@ class PhotoMetaAnimation extends StatelessWidget {
           ),
           SizedBox(width: 6),
           Opacity(
-            opacity: opacityUserAvatar.value,
+            opacity: opacityUserName.value,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

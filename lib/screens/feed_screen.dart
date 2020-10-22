@@ -23,7 +23,10 @@ class _FeedState extends State<Feed> {
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Column(children: <Widget>[
-            _buildItem(index),
+            _listItem(
+              PhotoLink: '',
+              HeroTag: 'dash' + index.toString(),
+            ),
             Divider(thickness: 2, color: AppColors.mercury),
           ]);
         },
@@ -31,18 +34,27 @@ class _FeedState extends State<Feed> {
       ),
     );
   }
+}
 
-  Widget _buildItem(int index) {
+class _listItem extends StatelessWidget {
+  String PhotoLink;
+  String HeroTag;
+
+  _listItem({this.PhotoLink, this.HeroTag});
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => FullScreenImage(
-                heroTag: 'dash' + index.toString(),
+                heroTag: HeroTag,
                 name: 'Денис Сайгин',
                 userName: 'oreshkanet',
-                userPhoto: 'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
+                userPhoto:
+                    'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
                 photo: kFlutterDash,
                 altDescription:
                     'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
@@ -52,7 +64,10 @@ class _FeedState extends State<Feed> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Hero(tag: 'dash' + index.toString(), child: Photo(photoLink: kFlutterDash)),
+          Hero(
+            tag: HeroTag,
+            child: Photo(photoLink: kFlutterDash),
+          ),
           _buildPhotoMeta(),
           _buildPhotoDescription(),
         ],
@@ -69,7 +84,8 @@ class _FeedState extends State<Feed> {
           Row(
             children: [
               UserAvatar(
-                  avatarLink: 'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4'),
+                  avatarLink:
+                      'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4'),
               SizedBox(width: 6),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
