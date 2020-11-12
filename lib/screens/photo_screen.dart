@@ -131,7 +131,7 @@ class _FullScreenImageState extends State<FullScreenImage>
   }
 
   Widget _buildAppBar() {
-    String title = ModalRoute.of(context).settings.arguments;
+    String title = ModalRoute.of(context).settings.arguments??'Test';
 
     return AppBar(
       elevation: 0,
