@@ -22,56 +22,48 @@ class _FeedState extends State<Feed> {
     return Scaffold(
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return Column(children: <Widget>[
-            _listItem(
-              PhotoLink: '',
-              HeroTag: 'dash' + index.toString(),
-            ),
-            Divider(thickness: 2, color: AppColors.mercury),
-          ]);
+          return Column(
+            children: <Widget>[
+              _buildItem(index),
+              Divider(thickness: 2, color: AppColors.mercury),
+            ],
+          );
         },
         itemCount: 10,
       ),
     );
   }
-}
 
-class _listItem extends StatelessWidget {
-  String PhotoLink;
-  String HeroTag;
+  Widget _buildItem(int index) {
+    final heroTag = 'feedItem_$index';
 
-  _listItem({this.PhotoLink, this.HeroTag});
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FullScreenImage(
+                    heroTag: heroTag,
+                    name: 'Денис Сайгин',
+                    userName: 'oreshkanet',
+                    userPhoto:
+                        'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
+                    photo: kFlutterDash,
+                    altDescription:
+                        'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
+              ),
+            );
+          },
+          child: Hero(tag: heroTag, child: Photo(photoLink: kFlutterDash)),
+        ),
+        _buildPhotoMeta(),
+        _buildPhotoDescription(),
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FullScreenImage(
-                heroTag: HeroTag,
-                name: 'Денис Сайгин',
-                userName: 'oreshkanet',
-                userPhoto:
-                    'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
-                photo: kFlutterDash,
-                altDescription:
-                    'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
-          ),
-        );
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Hero(
-            tag: HeroTag,
-            child: Photo(photoLink: kFlutterDash),
-          ),
-          _buildPhotoMeta(),
-          _buildPhotoDescription(),
-        ],
-      ),
+        //Divider(thickness: 2, color: AppColors.mercury),
+      ],
     );
   }
 
