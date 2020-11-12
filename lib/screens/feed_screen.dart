@@ -42,27 +42,27 @@ class _FeedState extends State<Feed> {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(
-                builder: (context) => FullScreenImage(
-                    heroTag: heroTag,
-                    name: 'Денис Сайгин',
-                    userName: 'oreshkanet',
-                    userPhoto:
-                        'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
-                    photo: kFlutterDash,
-                    altDescription:
-                        'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
-              ),
+              '/fullScreenImage',
+              arguments: FullScreenImageArguments(
+                  routeSettings: RouteSettings(
+                    arguments: 'Some Title',
+                  ),
+                  heroTag: heroTag,
+                  name: 'Денис Сайгин',
+                  userName: 'oreshkanet',
+                  userPhoto:
+                      'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4',
+                  photo: kFlutterDash,
+                  altDescription:
+                      'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest'),
             );
           },
           child: Hero(tag: heroTag, child: Photo(photoLink: kFlutterDash)),
         ),
         _buildPhotoMeta(),
         _buildPhotoDescription(),
-
-        //Divider(thickness: 2, color: AppColors.mercury),
       ],
     );
   }
@@ -83,9 +83,12 @@ class _FeedState extends State<Feed> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text('Денис Сайгин', style: AppStyles.h2Black),
+                    Text('Денис Сайгин',
+                        style: Theme.of(context).textTheme.headline2),
                     Text('@oreshkanet',
-                        style: AppStyles.h5Black
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5
                             .copyWith(color: AppColors.manatee)),
                   ]),
             ],
@@ -103,7 +106,10 @@ class _FeedState extends State<Feed> {
         'Beautiful girl in a yellow dress with a flower on her head in the summer in the forest',
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: AppStyles.h3.copyWith(color: AppColors.manatee),
+        style: Theme.of(context)
+            .textTheme
+            .headline3
+            .copyWith(color: AppColors.manatee),
       ),
     );
   }

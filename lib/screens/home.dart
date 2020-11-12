@@ -1,17 +1,25 @@
+import 'dart:async';
+
 import 'package:FlutterGalleryApp/res/app_icons.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:FlutterGalleryApp/app.dart';
 
 class Home extends StatefulWidget {
+  Home(this.onConnectivityChanged);
+
+  final Stream<ConnectivityResult> onConnectivityChanged;
+
   @override
-  State<StatefulWidget> createState() {
-    return _HomeState();
-  }
+  State<StatefulWidget> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
+  StreamSubscription subscription;
+
   int currentTab = 0;
   List<Widget> padges = [
     Feed(),
@@ -20,13 +28,62 @@ class _HomeState extends State<Home> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    subscription = widget.onConnectivityChanged.listen(
+      (ConnectivityResult result) {
+        switch (result) {
+          case ConnectivityResult.wifi:
+            {
+              ConnectivityOverlay().removeOverlay(context);
+              break;
+            }
+          case ConnectivityResult.mobile:
+            {
+              ConnectivityOverlay().removeOverlay(context);
+              break;
+            }
+          case ConnectivityResult.none:
+            {
+              ConnectivityOverlay()
+                  .showOverlay(context, Text('No internet connection'));
+              break;
+            }
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavyBar(
         itemCornerRadius: 8,
         curve: Curves.ease,
         currentTab: currentTab,
-        onItemSelected: (int index) => setState(() => currentTab = index),
+        onItemSelected: (index) async {
+          if (index == 1) {
+            /*
+            var value = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DemoScreen()),
+            );
+            print(value);
+            */
+          } else {
+            setState(() {
+              currentTab = index;
+            });
+          }
+        },
         items: [
           BottomNavyBarItem(
             asset: AppIcons.like,

@@ -1,9 +1,30 @@
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
-//import '../res/res.dart';
-//import '../widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+
+class FullScreenImageArguments {
+  FullScreenImageArguments({
+    this.heroTag,
+    this.name,
+    this.userName,
+    this.userPhoto,
+    this.photo,
+    this.altDescription,
+    this.key,
+    this.routeSettings,
+  });
+  final String heroTag;
+  final String name;
+  final String userName;
+  final String userPhoto;
+  final String altDescription;
+  final String photo;
+  final Key key;
+  final RouteSettings routeSettings;
+}
 
 class FullScreenImage extends StatefulWidget {
   FullScreenImage({
@@ -83,13 +104,7 @@ class _FullScreenImageState extends State<FullScreenImage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Photo', style: AppStyles.h1Black),
-        centerTitle: true,
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: IconButton(icon: Icon(CupertinoIcons.back), onPressed: null),
-      ),
+      appBar: _buildAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -102,8 +117,54 @@ class _FullScreenImageState extends State<FullScreenImage>
           const SizedBox(height: 9),
           _buildPhotoMeta(),
           const SizedBox(height: 17),
-          _buildButtons(),
+          _buildButtons(
+            () {
+              GallerySaver.saveImage(
+                  'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4');
+              Navigator.of(context).pop();
+            },
+            () => Navigator.of(context).pop(),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    String title = ModalRoute.of(context).settings.arguments;
+
+    return AppBar(
+      elevation: 0,
+      actions: <Widget>[
+        IconButton(
+            icon: Icon(
+              Icons.more_vert,
+              color: AppColors.grayChateau,
+            ),
+            onPressed: () {
+              showModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                context: context,
+                builder: (context) {
+                  return ClaimBottomSheet();
+                },
+              );
+            }),
+      ],
+      leading: IconButton(
+        icon: Icon(
+          CupertinoIcons.back,
+          color: AppColors.grayChateau,
+        ),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      backgroundColor: AppColors.white,
+      centerTitle: true,
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.headline1,
       ),
     );
   }
@@ -115,7 +176,10 @@ class _FullScreenImageState extends State<FullScreenImage>
         widget.altDescription,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: AppStyles.h3.copyWith(color: AppColors.manatee),
+        style: Theme.of(context)
+            .textTheme
+            .headline3
+            .copyWith(color: AppColors.manatee),
       ),
     );
   }
@@ -139,10 +203,12 @@ class _FullScreenImageState extends State<FullScreenImage>
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(widget.name, style: AppStyles.h1Black),
+                Text(widget.name, style: Theme.of(context).textTheme.headline1),
                 Text('@${widget.userName}',
-                    style:
-                        AppStyles.h5Black.copyWith(color: AppColors.manatee)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        .copyWith(color: AppColors.manatee)),
               ],
             ),
             builder: (context, Widget child) {
@@ -154,7 +220,7 @@ class _FullScreenImageState extends State<FullScreenImage>
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildButtons(VoidCallback onSave, VoidCallback onClose) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
@@ -162,42 +228,83 @@ class _FullScreenImageState extends State<FullScreenImage>
         children: <Widget>[
           LikeButton(2157, false),
           SizedBox(width: 12),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: 105,
-              height: 36,
-              decoration: BoxDecoration(
-                  color: AppColors.dodgerBlue,
-                  borderRadius: BorderRadius.all(Radius.circular(7))),
-              child: Center(
-                child: Text(
-                  'Save',
-                  textAlign: TextAlign.center,
-                  style: AppStyles.h2Black.copyWith(color: AppColors.white),
-                ),
+          _buildButton('Save', () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('download photos'),
+                content: Text('Are you sure want to download photo?'),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: onSave,
+                    child: Text('download'),
+                  ),
+                  FlatButton(
+                    onPressed: onClose,
+                    child: Text('Close'),
+                  ),
+                ],
               ),
-            ),
-          ),
+            );
+          }),
           SizedBox(width: 12),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: 105,
-              height: 36,
-              decoration: BoxDecoration(
-                  color: AppColors.dodgerBlue,
-                  borderRadius: BorderRadius.all(Radius.circular(7))),
-              child: Center(
-                child: Text(
-                  'Visit',
-                  textAlign: TextAlign.center,
-                  style: AppStyles.h2Black.copyWith(color: AppColors.white),
-                ),
-              ),
-            ),
+          _buildButton(
+            'Visit',
+            () async {
+              OverlayState overlayState = Overlay.of(context);
+              OverlayEntry overlayEntry =
+                  OverlayEntry(builder: (BuildContext context) {
+                return Positioned(
+                  top: MediaQuery.of(context).viewInsets.top + 50,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                        decoration: BoxDecoration(
+                          color: AppColors.mercury,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text('SkillBranch'),
+                      ),
+                    ),
+                  ),
+                );
+              });
+              overlayState.insert(overlayEntry);
+              await Future.delayed(Duration(seconds: 1));
+              overlayEntry.remove();
+            },
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildButton(String text, VoidCallback callback) {
+    return GestureDetector(
+      onTap: callback,
+      child: Container(
+        width: 105,
+        height: 36,
+        decoration: BoxDecoration(
+            color: AppColors.dodgerBlue,
+            borderRadius: BorderRadius.all(Radius.circular(7))),
+        child: Center(
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .headline2
+                .copyWith(color: AppColors.white),
+          ),
+        ),
       ),
     );
   }
