@@ -237,7 +237,7 @@ class _FullScreenImageState extends State<FullScreenImage>
                 actions: <Widget>[
                   FlatButton(
                     onPressed: onSave,
-                    child: Text('download'),
+                    child: Text('Download'),
                   ),
                   FlatButton(
                     onPressed: onClose,
