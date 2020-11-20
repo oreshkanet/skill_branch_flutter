@@ -219,9 +219,7 @@ class _ItemWidget extends StatelessWidget {
             size: 20,
             color: isSelected ? item.activeColor : item.inactiveColor,
           ),
-          SizedBox(
-            height: 2,
-          ),
+          const SizedBox(height: 2),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 4),

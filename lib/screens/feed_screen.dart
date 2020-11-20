@@ -85,7 +85,7 @@ class _FeedState extends State<Feed> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 6),
+        const SizedBox(height: 6),
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(
@@ -108,7 +108,7 @@ class _FeedState extends State<Feed> {
         ),
         _buildPhotoMeta(photoItem),
         _buildPhotoDescription(photoItem),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
       ],
     );
   }
@@ -122,7 +122,7 @@ class _FeedState extends State<Feed> {
           Row(
             children: [
               UserAvatar(avatarLink: photoItem.user.profileImage.small),
-              SizedBox(width: 6),
+              const SizedBox(width: 6),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

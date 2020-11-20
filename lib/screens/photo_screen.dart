@@ -1,3 +1,4 @@
+import 'package:FlutterGalleryApp/data_provider.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
@@ -90,28 +91,49 @@ class _FullScreenImageState extends State<FullScreenImage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Hero(
-              tag: widget.heroTag,
-              child: Photo(photoLink: widget.photoItem.urls.regular),
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: viewportConstraints.maxHeight,
             ),
-            const SizedBox(height: 11),
-            _buildPhotoDescription(),
-            const SizedBox(height: 9),
-            _buildPhotoMeta(),
-            const SizedBox(height: 17),
-            _buildButtons(
-              () {
-                GallerySaver.saveImage(widget.photoItem.urls.full);
-                Navigator.of(context).pop();
-              },
-              () => Navigator.of(context).pop(),
+            child: IntrinsicHeight(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Hero(
+                    tag: widget.heroTag,
+                    child: Photo(photoLink: widget.photoItem.urls.regular),
+                  ),
+                  const SizedBox(height: 11),
+                  _buildPhotoDescription(),
+                  const SizedBox(height: 9),
+                  _buildPhotoMeta(),
+                  const SizedBox(height: 17),
+                  _buildButtons(
+                    () {
+                      GallerySaver.saveImage(widget.photoItem.urls.full);
+                      Navigator.of(context).pop();
+                    },
+                    () => Navigator.of(context).pop(),
+                  ),
+                  const SizedBox(height: 17),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child: _buildRandom(),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 
@@ -159,7 +181,6 @@ class _FullScreenImageState extends State<FullScreenImage>
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Text(
         widget.photoItem.altDescription ?? '',
-        maxLines: 3,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context)
             .textTheme
@@ -182,7 +203,7 @@ class _FullScreenImageState extends State<FullScreenImage>
               return Opacity(opacity: opacityUserAvatar.value, child: child);
             },
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           AnimatedBuilder(
             animation: _controller,
             child: Column(
@@ -216,7 +237,7 @@ class _FullScreenImageState extends State<FullScreenImage>
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           LikeButton(2157, false),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           _buildButton('Save', () {
             showDialog(
               context: context,
@@ -236,7 +257,7 @@ class _FullScreenImageState extends State<FullScreenImage>
               ),
             );
           }),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           _buildButton(
             'Visit',
             () async {
@@ -294,6 +315,57 @@ class _FullScreenImageState extends State<FullScreenImage>
                 .copyWith(color: AppColors.white),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildRandom() {
+    return FutureBuilder(
+      future: DataProvider.getRandomPhotos(9),
+      builder: (context, AsyncSnapshot<photoModel.PhotoList> snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Что-то пошло не так :\'('));
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          return new GridView.count(
+            primary: false,
+            crossAxisCount: 3,
+            childAspectRatio: 1.3,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            children: snapshot.data.photos.map((photoModel.Photo photoItem) {
+              return Photo(
+                photoLink: photoItem.urls.small,
+                paddingHorizontal: 0,
+                paddingVertical: 0,
+                borderRadius: 7,
+              );
+            }).toList(),
+          );
+        }
+
+        return CircularProgressIndicator();
+      },
+    );
+  }
+
+  Widget _buildRandomList(List<photoModel.Photo> photoList) {
+    return SliverGrid(
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 200.0,
+        mainAxisSpacing: 10.0,
+        crossAxisSpacing: 10.0,
+        childAspectRatio: 4.0,
+      ),
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return Container(
+              height: MediaQuery.of(context).size.width / 4,
+              child: Photo(
+                photoLink: photoList[index].urls.small,
+              ));
+        },
+        childCount: photoList.length,
       ),
     );
   }

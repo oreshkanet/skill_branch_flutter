@@ -8,7 +8,7 @@ class ClaimBottomSheet extends StatelessWidget {
     return Container(
       child: Column(
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           _buildRow(context, 'adult'),
           _buildRow(context, 'harm'),
           _buildRow(context, 'bully'),

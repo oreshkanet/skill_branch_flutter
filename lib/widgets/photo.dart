@@ -4,16 +4,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Photo extends StatelessWidget {
-  Photo({Key key, this.photoLink}) : super(key: key);
+  Photo(
+      {Key key,
+      this.photoLink,
+      this.paddingHorizontal = 10,
+      this.paddingVertical = 5,
+      this.borderRadius = 17})
+      : super(key: key);
 
   final String photoLink;
+  final double paddingHorizontal;
+  final double paddingVertical;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: EdgeInsets.symmetric(
+          horizontal: paddingHorizontal, vertical: paddingVertical),
       child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(17)),
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
           child: Container(
             color: AppColors.grayChateau,
             child: CachedNetworkImage(

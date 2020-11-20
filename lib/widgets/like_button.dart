@@ -48,9 +48,7 @@ class _LikeButtonState extends State<LikeButton> {
               child: Row(
                 children: <Widget>[
                   Icon(isLiked ? AppIcons.like_fill : AppIcons.like),
-                  SizedBox(
-                    width: 4.21,
-                  ),
+                  const SizedBox(width: 4.21),
                   Text(likeCount.toString()),
                 ],
               )),

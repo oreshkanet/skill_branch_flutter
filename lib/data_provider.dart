@@ -49,6 +49,7 @@ class DataProvider {
 
   static Future<PhotoList> getPhotos(int page, int perPage) async {
     return Sample.getPhotoList();
+
     var response = await http.get(
         'https://api.unsplash.com/photos?page=$page&per_page=$perPage',
         headers: {'Authorization': 'Bearer $authToken'});
@@ -84,12 +85,27 @@ class DataProvider {
     }
   }
 
-  static Future<Photo> getRandomPhoto() async {
-    var response = await http.get('https://api.unsplash.com/photos/random',
+  static Future<Photo> getRandomPhoto(int count) async {
+    var response = await http.get(
+        'https://api.unsplash.com/photos/random?=$count',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return Photo.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Error: ${response.reasonPhrase}');
+    }
+  }
+
+  static Future<PhotoList> getRandomPhotos(int count) async {
+    return Sample.getPhotoList();
+
+    var response = await http.get(
+        'https://api.unsplash.com/photos/random?=$count',
+        headers: {'Authorization': 'Bearer $authToken'});
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return PhotoList.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error: ${response.reasonPhrase}');
     }
