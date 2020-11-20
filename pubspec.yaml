@@ -35,3 +35,6 @@ flutter:
     - family: AppIcons
       fonts:
         - asset: assets/fonts/AppIcons.ttf
+    - family: BottomNavIcons
+      fonts:
+        - asset: assets/fonts/BottomNavIcons.ttf

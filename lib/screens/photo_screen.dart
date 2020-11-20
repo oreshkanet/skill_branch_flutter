@@ -4,24 +4,17 @@ import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:FlutterGalleryApp/models/photo_list/model.dart' as photoModel;
 
 class FullScreenImageArguments {
   FullScreenImageArguments({
     this.heroTag,
-    this.name,
-    this.userName,
-    this.userPhoto,
-    this.photo,
-    this.altDescription,
+    this.photoItem,
     this.key,
     this.routeSettings,
   });
   final String heroTag;
-  final String name;
-  final String userName;
-  final String userPhoto;
-  final String altDescription;
-  final String photo;
+  final photoModel.Photo photoItem;
   final Key key;
   final RouteSettings routeSettings;
 }
@@ -29,20 +22,12 @@ class FullScreenImageArguments {
 class FullScreenImage extends StatefulWidget {
   FullScreenImage({
     this.heroTag,
-    this.name,
-    this.userName,
-    this.userPhoto,
-    this.photo,
-    this.altDescription,
+    this.photoItem,
     Key key,
   }) : super(key: key);
 
   final String heroTag;
-  final String name;
-  final String userName;
-  final String userPhoto;
-  final String altDescription;
-  final String photo;
+  final photoModel.Photo photoItem;
 
   @override
   State<StatefulWidget> createState() {
@@ -105,33 +90,33 @@ class _FullScreenImageState extends State<FullScreenImage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Hero(
-            tag: widget.heroTag,
-            child: Photo(photoLink: widget.photo),
-          ),
-          const SizedBox(height: 11),
-          _buildPhotoDescription(),
-          const SizedBox(height: 9),
-          _buildPhotoMeta(),
-          const SizedBox(height: 17),
-          _buildButtons(
-            () {
-              GallerySaver.saveImage(
-                  'https://avatars0.githubusercontent.com/u/69664569?s=460&v=4');
-              Navigator.of(context).pop();
-            },
-            () => Navigator.of(context).pop(),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Hero(
+              tag: widget.heroTag,
+              child: Photo(photoLink: widget.photoItem.urls.regular),
+            ),
+            const SizedBox(height: 11),
+            _buildPhotoDescription(),
+            const SizedBox(height: 9),
+            _buildPhotoMeta(),
+            const SizedBox(height: 17),
+            _buildButtons(
+              () {
+                GallerySaver.saveImage(widget.photoItem.urls.full);
+                Navigator.of(context).pop();
+              },
+              () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildAppBar() {
-    String title = ModalRoute.of(context).settings.arguments??'Test';
+    String title = ModalRoute.of(context).settings.arguments ?? 'Test';
 
     return AppBar(
       elevation: 0,
@@ -173,7 +158,7 @@ class _FullScreenImageState extends State<FullScreenImage>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Text(
-        widget.altDescription,
+        widget.photoItem.altDescription ?? '',
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context)
@@ -191,7 +176,8 @@ class _FullScreenImageState extends State<FullScreenImage>
         children: [
           AnimatedBuilder(
             animation: _controller,
-            child: UserAvatar(avatarLink: widget.userPhoto),
+            child: UserAvatar(
+                avatarLink: widget.photoItem.user.profileImage.medium),
             builder: (context, Widget child) {
               return Opacity(opacity: opacityUserAvatar.value, child: child);
             },
@@ -203,8 +189,11 @@ class _FullScreenImageState extends State<FullScreenImage>
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(widget.name, style: Theme.of(context).textTheme.headline1),
-                Text('@${widget.userName}',
+                Text(
+                  widget.photoItem.user.name,
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+                Text('@${widget.photoItem.user.username}',
                     style: Theme.of(context)
                         .textTheme
                         .headline5

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:FlutterGalleryApp/models/sample.dart';
+
 import 'models/auth/model.dart';
 import 'models/photo_list/model.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +23,8 @@ import 'package:http/http.dart' as http;
 
 class DataProvider {
   static const String _appId = "184537"; //not used, just for info
-  static String authToken = ""; //"r6gRLW1t5JtTXrYkyjADvWmhdPPfyLs6RH35QsgxVUI";
+  static String authToken =
+      "H5KSJVe71H16Rn8ZIaeBUy8KVn3pjKhTTAjAhwduaXc"; //"NiAm1niaD6t0uNrInTGR27UmSXSMvDNAluvb52SqT3U";
   static const String _accessKey =
       'uYpsEMuU_nKS3PsUYbTpYZQbvR8Rdma3IbTQR7k0o8w'; //app access key from console
   static const String _secretKey =
@@ -45,6 +48,7 @@ class DataProvider {
   }
 
   static Future<PhotoList> getPhotos(int page, int perPage) async {
+    return Sample.getPhotoList();
     var response = await http.get(
         'https://api.unsplash.com/photos?page=$page&per_page=$perPage',
         headers: {'Authorization': 'Bearer $authToken'});

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:FlutterGalleryApp/res/app_icons.dart';
+import 'package:FlutterGalleryApp/res/bottom_nav_icons_icons.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
 import 'package:connectivity/connectivity.dart';
@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
   int currentTab = 0;
   List<Widget> padges = [
     Feed(),
+    Container(),
     Container(),
     Container(),
   ];
@@ -66,40 +67,33 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavyBar(
-        itemCornerRadius: 8,
         curve: Curves.ease,
         currentTab: currentTab,
-        onItemSelected: (index) async {
-          if (index == 1) {
-            /*
-            var value = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DemoScreen()),
-            );
-            print(value);
-            */
-          } else {
-            setState(() {
-              currentTab = index;
-            });
-          }
-        },
+        onItemSelected: (index) => setState(() {
+          currentTab = index;
+        }),
         items: [
           BottomNavyBarItem(
-            asset: AppIcons.like,
-            title: Text('Feed'),
+            asset: BottomNavIcons.home,
+            title: Text('Home'),
             activeColor: AppColors.dodgerBlue,
             inactiveColor: AppColors.manatee,
           ),
           BottomNavyBarItem(
-            asset: AppIcons.like,
+            asset: BottomNavIcons.search,
             title: Text('Search'),
             activeColor: AppColors.dodgerBlue,
             inactiveColor: AppColors.manatee,
           ),
           BottomNavyBarItem(
-            asset: AppIcons.like,
-            title: Text('User'),
+            asset: BottomNavIcons.add,
+            title: Text('Add photo'),
+            activeColor: AppColors.dodgerBlue,
+            inactiveColor: AppColors.manatee,
+          ),
+          BottomNavyBarItem(
+            asset: BottomNavIcons.profile,
+            title: Text('Profile'),
             activeColor: AppColors.dodgerBlue,
             inactiveColor: AppColors.manatee,
           ),
@@ -113,7 +107,7 @@ class _HomeState extends State<Home> {
 class BottomNavyBar extends StatelessWidget {
   BottomNavyBar({
     Key key,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = Colors.transparent,
     this.showElevation = true,
     this.containerHeight = 56,
     this.mainAxisAlignment = MainAxisAlignment.spaceBetween,
@@ -143,28 +137,30 @@ class BottomNavyBar extends StatelessWidget {
         if (showElevation) BoxShadow(color: Colors.black12, blurRadius: 2),
       ]),
       child: SafeArea(
-          child: Container(
-              width: double.infinity,
-              height: containerHeight,
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-              child: Row(
-                mainAxisAlignment: mainAxisAlignment,
-                children: items.map((item) {
-                  var index = items.indexOf(item);
+        child: Container(
+          width: double.infinity,
+          height: containerHeight,
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            mainAxisAlignment: mainAxisAlignment,
+            children: items.map((item) {
+              var index = items.indexOf(item);
 
-                  return GestureDetector(
-                    onTap: () => onItemSelected(index),
-                    child: _ItemWidget(
-                      isSelected: currentTab == index,
-                      item: item,
-                      backgroundColor: backgroundColor,
-                      animationDuration: animationDuration,
-                      itemCornerRadius: itemCornerRadius,
-                      curve: curve,
-                    ),
-                  );
-                }).toList(),
-              ))),
+              return GestureDetector(
+                onTap: () => onItemSelected(index),
+                child: _ItemWidget(
+                  isSelected: currentTab == index,
+                  item: item,
+                  backgroundColor: backgroundColor,
+                  animationDuration: animationDuration,
+                  itemCornerRadius: itemCornerRadius,
+                  curve: curve,
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -195,24 +191,19 @@ class _ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: animationDuration,
-      height: double.infinity,
+      width: (MediaQuery.of(context).size.width - 8 * 4 - 4 * 2) / 4,
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      width: isSelected
-          ? 150
-          : (MediaQuery.of(context).size.width - 150 - 8 * 4 - 4 * 2) / 2,
       curve: curve,
-      decoration: BoxDecoration(
-        color: isSelected ? item.activeColor.withOpacity(0.2) : backgroundColor,
-        borderRadius: BorderRadius.circular(itemCornerRadius),
-      ),
-      child: Row(
+      child: Column(
         children: <Widget>[
           Icon(
             item.asset,
             size: 20,
             color: isSelected ? item.activeColor : item.inactiveColor,
           ),
-          SizedBox(width: 4),
+          SizedBox(
+            height: 2,
+          ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -220,9 +211,8 @@ class _ItemWidget extends StatelessWidget {
                 child: item.title,
                 textAlign: item.textAlign,
                 maxLines: 1,
-                style: TextStyle(
+                style: AppStyles.h6.copyWith(
                   color: isSelected ? item.activeColor : item.inactiveColor,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
