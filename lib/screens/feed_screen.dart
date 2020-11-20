@@ -46,19 +46,21 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: [_buildListView(context, data)],
-        ),
-      ),
+      body: _buildListView(context, data),
     );
   }
 
   Widget _buildListView(BuildContext context, List<photoModel.Photo> photos) {
     return Container(
-      height: MediaQuery.of(context).size.height - 56,
       width: MediaQuery.of(context).size.width,
-      child: ListView.builder(
+      child: ListView.separated(
+        separatorBuilder: (context, index) {
+          return Divider(
+            height: 1.0,
+            thickness: 1.0,
+            indent: 1.0,
+          );
+        },
         controller: _scrollController,
         itemBuilder: (context, i) {
           if (i == data.length) {
@@ -83,6 +85,7 @@ class _FeedState extends State<Feed> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        SizedBox(height: 6),
         GestureDetector(
           onTap: () {
             Navigator.pushNamed(
@@ -105,6 +108,7 @@ class _FeedState extends State<Feed> {
         ),
         _buildPhotoMeta(photoItem),
         _buildPhotoDescription(photoItem),
+        SizedBox(height: 8),
       ],
     );
   }

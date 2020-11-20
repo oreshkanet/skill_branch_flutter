@@ -66,40 +66,52 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavyBar(
-        curve: Curves.ease,
-        currentTab: currentTab,
-        onItemSelected: (index) => setState(() {
-          currentTab = index;
-        }),
-        items: [
-          BottomNavyBarItem(
-            asset: BottomNavIcons.home,
-            title: Text('Home'),
-            activeColor: AppColors.dodgerBlue,
-            inactiveColor: AppColors.manatee,
-          ),
-          BottomNavyBarItem(
-            asset: BottomNavIcons.search,
-            title: Text('Search'),
-            activeColor: AppColors.dodgerBlue,
-            inactiveColor: AppColors.manatee,
-          ),
-          BottomNavyBarItem(
-            asset: BottomNavIcons.add,
-            title: Text('Add photo'),
-            activeColor: AppColors.dodgerBlue,
-            inactiveColor: AppColors.manatee,
-          ),
-          BottomNavyBarItem(
-            asset: BottomNavIcons.profile,
-            title: Text('Profile'),
-            activeColor: AppColors.dodgerBlue,
-            inactiveColor: AppColors.manatee,
-          ),
-        ],
+      body: SafeArea(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            padges[currentTab],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: BottomNavyBar(
+                backgroundColor: Colors.white,
+                curve: Curves.ease,
+                showElevation: true,
+                currentTab: currentTab,
+                onItemSelected: (index) => setState(() {
+                  currentTab = index;
+                }),
+                items: [
+                  BottomNavyBarItem(
+                    asset: BottomNavIcons.home,
+                    title: Text('Home'),
+                    activeColor: AppColors.dodgerBlue,
+                    inactiveColor: AppColors.manatee,
+                  ),
+                  BottomNavyBarItem(
+                    asset: BottomNavIcons.search,
+                    title: Text('Search'),
+                    activeColor: AppColors.dodgerBlue,
+                    inactiveColor: AppColors.manatee,
+                  ),
+                  BottomNavyBarItem(
+                    asset: BottomNavIcons.add,
+                    title: Text('Add photo'),
+                    activeColor: AppColors.dodgerBlue,
+                    inactiveColor: AppColors.manatee,
+                  ),
+                  BottomNavyBarItem(
+                    asset: BottomNavIcons.profile,
+                    title: Text('Profile'),
+                    activeColor: AppColors.dodgerBlue,
+                    inactiveColor: AppColors.manatee,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
-      body: padges[currentTab],
     );
   }
 }
@@ -133,9 +145,15 @@ class BottomNavyBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: backgroundColor, boxShadow: [
-        if (showElevation) BoxShadow(color: Colors.black12, blurRadius: 2),
-      ]),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        boxShadow: [
+          if (showElevation)
+            BoxShadow(color: backgroundColor, blurRadius: 3, spreadRadius: 3),
+          if (showElevation)
+            BoxShadow(color: backgroundColor, blurRadius: 25, spreadRadius: 5),
+        ],
+      ),
       child: SafeArea(
         child: Container(
           width: double.infinity,
