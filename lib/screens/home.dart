@@ -25,7 +25,6 @@ class _HomeState extends State<Home> {
     Feed(),
     Container(),
     Container(),
-    Container(),
   ];
 
   @override
@@ -91,12 +90,6 @@ class _HomeState extends State<Home> {
                   BottomNavyBarItem(
                     asset: BottomNavIcons.search,
                     title: Text('Search'),
-                    activeColor: AppColors.dodgerBlue,
-                    inactiveColor: AppColors.manatee,
-                  ),
-                  BottomNavyBarItem(
-                    asset: BottomNavIcons.add,
-                    title: Text('Add photo'),
                     activeColor: AppColors.dodgerBlue,
                     inactiveColor: AppColors.manatee,
                   ),
@@ -209,7 +202,7 @@ class _ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: animationDuration,
-      width: (MediaQuery.of(context).size.width - 8 * 4 - 4 * 2) / 4,
+      width: (MediaQuery.of(context).size.width - 8 * 3 - 3 * 2) / 3,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       curve: curve,
       child: Column(

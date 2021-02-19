@@ -122,7 +122,7 @@ class _FeedState extends State<Feed> {
           Row(
             children: [
               UserAvatar(avatarLink: photoItem.user.profileImage.small),
-              const SizedBox(width: 6),
+              const SizedBox(width: 10),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

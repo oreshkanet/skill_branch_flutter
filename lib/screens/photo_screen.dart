@@ -107,7 +107,7 @@ class _FullScreenImageState extends State<FullScreenImage>
                     tag: widget.heroTag,
                     child: Photo(photoLink: widget.photoItem.urls.regular),
                   ),
-                  const SizedBox(height: 11),
+                  const SizedBox(height: 10),
                   _buildPhotoDescription(),
                   const SizedBox(height: 9),
                   _buildPhotoMeta(),
@@ -192,7 +192,7 @@ class _FullScreenImageState extends State<FullScreenImage>
 
   Widget _buildPhotoMeta() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
           AnimatedBuilder(
