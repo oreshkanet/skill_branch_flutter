@@ -106,8 +106,6 @@ class _FeedState extends State<Feed> {
               child: Photo(
                 photoLink: photoItem.urls.regular,
                 placeholderColor: ColorConverter.decode(photoItem.color),
-                height: photoItem.height.toDouble(),
-                width: photoItem.width.toDouble(),
               )),
         ),
         _buildPhotoMeta(photoItem),
@@ -152,7 +150,7 @@ class _FeedState extends State<Feed> {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Text(
         photoItem.altDescription ?? '',
-        maxLines: 3,
+        maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context)
             .textTheme
