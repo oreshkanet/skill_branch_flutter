@@ -1,3 +1,4 @@
+import 'package:FlutterGalleryApp/color_converter.dart';
 import 'package:FlutterGalleryApp/data_provider.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
@@ -104,6 +105,9 @@ class _FeedState extends State<Feed> {
               tag: heroTag,
               child: Photo(
                 photoLink: photoItem.urls.regular,
+                placeholderColor: ColorConverter.decode(photoItem.color),
+                placeholderHeight: photoItem.height.toDouble(),
+                placeholderWidth: photoItem.width.toDouble(),
               )),
         ),
         _buildPhotoMeta(photoItem),

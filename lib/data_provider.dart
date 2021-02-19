@@ -48,7 +48,7 @@ class DataProvider {
   }
 
   static Future<PhotoList> getPhotos(int page, int perPage) async {
-    return Sample.getPhotoList();
+    //return Sample.getPhotoList();
 
     var response = await http.get(
         'https://api.unsplash.com/photos?page=$page&per_page=$perPage',
