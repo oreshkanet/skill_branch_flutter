@@ -9,8 +9,8 @@ class Photo extends StatelessWidget {
     this.paddingHorizontal = 10,
     this.paddingVertical = 5,
     this.borderRadius = 17,
-    this.width = 0,
-    this.height = 0,
+    this.width,
+    this.height,
     this.placeholderColor = Colors.black26,
   }) : super(key: key);
 
@@ -24,15 +24,11 @@ class Photo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (width == 0) {
+    if (width != null && height != null) {
+      width = MediaQuery.of(context).size.width;
+      height = MediaQuery.of(context).size.width / width * height;
       width = MediaQuery.of(context).size.width;
     }
-    if (height == 0) {
-      height = width;
-    } else {
-      height = MediaQuery.of(context).size.width / width * height;
-    }
-    width = MediaQuery.of(context).size.width;
 
     return Padding(
         padding: EdgeInsets.symmetric(
