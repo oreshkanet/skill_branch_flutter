@@ -106,8 +106,8 @@ class _FeedState extends State<Feed> {
               child: Photo(
                 photoLink: photoItem.urls.regular,
                 placeholderColor: ColorConverter.decode(photoItem.color),
-                placeholderHeight: photoItem.height.toDouble(),
-                placeholderWidth: photoItem.width.toDouble(),
+                height: photoItem.height.toDouble(),
+                width: photoItem.width.toDouble(),
               )),
         ),
         _buildPhotoMeta(photoItem),
