@@ -1,5 +1,5 @@
-import 'package:FlutterGalleryApp/data_provider.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -181,6 +181,7 @@ class _FullScreenImageState extends State<FullScreenImage>
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Text(
         widget.photoItem.altDescription ?? '',
+        maxLines: 2,
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context)
             .textTheme
@@ -321,7 +322,7 @@ class _FullScreenImageState extends State<FullScreenImage>
 
   Widget _buildRandom() {
     return FutureBuilder(
-      future: DataProvider.getRandomPhotos(9),
+      future: UnsplashProvider.getRandomPhotos(9),
       builder: (context, AsyncSnapshot<photoModel.PhotoList> snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Что-то пошло не так :\'('));

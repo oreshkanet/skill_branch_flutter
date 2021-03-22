@@ -1,14 +1,11 @@
 import 'package:FlutterGalleryApp/color_converter.dart';
-import 'package:FlutterGalleryApp/data_provider.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
+import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:FlutterGalleryApp/models/photo_list/model.dart' as photoModel;
-
-const String kFlutterDash =
-    'https://248006.selcdn.ru/main/iblock/6f8/6f895fcf6ade1b0b20209ebe73ee72ea/b3b9ff725eb73759e796e743433df535.png.webp';
 
 class Feed extends StatefulWidget {
   Feed({Key key}) : super(key: key);
@@ -165,7 +162,7 @@ class _FeedState extends State<Feed> {
       setState(() {
         isLoading = true;
       });
-      var tempList = await DataProvider.getPhotos(page, 10);
+      var tempList = await UnsplashProvider.getPhotos(page, 10);
 
       setState(() {
         isLoading = false;
