@@ -3,6 +3,8 @@ import 'package:FlutterGalleryApp/bloc/search_bloc.dart';
 import 'package:FlutterGalleryApp/bloc/search_event.dart';
 import 'package:FlutterGalleryApp/color_converter.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
+import 'package:FlutterGalleryApp/res/app_icons.dart';
+import 'package:FlutterGalleryApp/res/colors.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,18 +13,62 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart' as widgets;
 
 class SearchScreen extends StatelessWidget {
-  final _repository = UnsplashRepository();
+  //final _repository = UnsplashRepository();
+  final _searchBloc = SearchBloc(repository: UnsplashRepository());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Search"),
-      ),
+      appBar: _buildAppBar(),
       body: BlocProvider(
-        create: (context) => SearchBloc(repository: _repository),
+        create: (context) => _searchBloc, //SearchBloc(repository: _repository),
         child: _SearchPhotoList(),
       ),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return AppBar(
+      elevation: 0,
+      title: Column(
+        children: [
+          TextField(
+            style: TextStyle(fontSize: 17),
+            decoration: InputDecoration(
+              hintText: "Search",
+              prefixIcon: Icon(
+                Icons.search,
+                color: AppColors.textGray1,
+              ),
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 4.0,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  style: BorderStyle.none,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(
+                  style: BorderStyle.none,
+                ),
+              ),
+              fillColor: AppColors.grayButton,
+              filled: true,
+            ),
+            autofocus: false,
+            onSubmitted: (text) => _searchBloc.add(
+              SearchStartEvent(keyword: text),
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: AppColors.white,
+      centerTitle: true,
     );
   }
 }
@@ -57,20 +103,15 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
         if (state is SearchEmptyState) {
-          return Column(
-            children: [
-              SearchButtons(),
-              Text("empty"),
-            ],
-          );
+          return Center(child: Text("empty"));
         } else if (state is SearchErrorState) {
-          return Text("error");
+          return Center(child: Text("empty"));
         } else if (state is SearchLoadedState) {
           return _buildListView(context, state);
         } else if (state is SearchLoadingState) {
           return CircularProgressIndicator();
         } else {
-          return Text("unknown");
+          return Center(child: Text("empty"));
         }
       },
     );
