@@ -1,9 +1,6 @@
 import 'dart:convert';
 
-import 'package:FlutterGalleryApp/models/sample.dart';
-
-import 'package:FlutterGalleryApp/models/auth/model.dart';
-import 'package:FlutterGalleryApp/models/photo_list/model.dart';
+import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:http/http.dart' as http;
 
 /*
@@ -47,9 +44,7 @@ class UnsplashProvider {
     }
   }
 
-  static Future<PhotoList> getPhotos(int page, int perPage) async {
-    //return Sample.getPhotoList();
-
+  Future<PhotoList> getPhotos(int page, int perPage) async {
     var response = await http.get(
         'https://api.unsplash.com/photos?page=$page&per_page=$perPage',
         headers: {'Authorization': 'Bearer $authToken'});
@@ -61,20 +56,20 @@ class UnsplashProvider {
     }
   }
 
-  static Future<PhotoList> searchPhotos(
+  Future<PhotoSearch> searchPhotos(
       String keyword, int page, int perPage) async {
     var response = await http.get(
         'https://api.unsplash.com/search/photos?query=$keyword&page=$page&per_page=$perPage',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return PhotoList.fromJson(json.decode(response.body));
+      return PhotoSearch.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error: ${response.reasonPhrase}');
     }
   }
 
-  static Future<Photo> getPhoto(String photoId) async {
+  Future<Photo> getPhoto(String photoId) async {
     var response = await http.get('https://api.unsplash.com/photos/$photoId',
         headers: {'Authorization': 'Bearer $authToken'});
 
@@ -85,9 +80,8 @@ class UnsplashProvider {
     }
   }
 
-  static Future<Photo> getRandomPhoto(int count) async {
-    var response = await http.get(
-        'https://api.unsplash.com/photos/random?=$count',
+  static Future<Photo> getRandomPhoto() async {
+    var response = await http.get('https://api.unsplash.com/photos/random?=1',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -98,8 +92,6 @@ class UnsplashProvider {
   }
 
   static Future<PhotoList> getRandomPhotos(int count) async {
-    return Sample.getPhotoList();
-
     var response = await http.get(
         'https://api.unsplash.com/photos/random?=$count',
         headers: {'Authorization': 'Bearer $authToken'});
