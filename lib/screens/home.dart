@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:FlutterGalleryApp/res/bottom_nav_icons_icons.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:FlutterGalleryApp/screens/search_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class _HomeState extends State<Home> {
   int currentTab = 0;
   List<Widget> padges = [
     Feed(),
-    Container(),
+    SearchScreen(),
     Container(),
   ];
 
