@@ -5,7 +5,7 @@ import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:FlutterGalleryApp/models/photo_list/model.dart' as photoModel;
+import 'package:FlutterGalleryApp/models/models.dart' as models;
 
 class FullScreenImageArguments {
   FullScreenImageArguments({
@@ -15,7 +15,7 @@ class FullScreenImageArguments {
     this.routeSettings,
   });
   final String heroTag;
-  final photoModel.Photo photoItem;
+  final models.Photo photoItem;
   final Key key;
   final RouteSettings routeSettings;
 }
@@ -28,7 +28,7 @@ class FullScreenImage extends StatefulWidget {
   }) : super(key: key);
 
   final String heroTag;
-  final photoModel.Photo photoItem;
+  final models.Photo photoItem;
 
   @override
   State<StatefulWidget> createState() {
@@ -323,7 +323,7 @@ class _FullScreenImageState extends State<FullScreenImage>
   Widget _buildRandom() {
     return FutureBuilder(
       future: UnsplashProvider.getRandomPhotos(9),
-      builder: (context, AsyncSnapshot<photoModel.PhotoList> snapshot) {
+      builder: (context, AsyncSnapshot<models.PhotoList> snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Что-то пошло не так :\'('));
         }
@@ -334,7 +334,7 @@ class _FullScreenImageState extends State<FullScreenImage>
             childAspectRatio: 1.3,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            children: snapshot.data.photos.map((photoModel.Photo photoItem) {
+            children: snapshot.data.photos.map((models.Photo photoItem) {
               return Photo(
                 photoLink: photoItem.urls.small,
                 paddingHorizontal: 0,
@@ -350,7 +350,7 @@ class _FullScreenImageState extends State<FullScreenImage>
     );
   }
 
-  Widget _buildRandomList(List<photoModel.Photo> photoList) {
+  Widget _buildRandomList(List<models.Photo> photoList) {
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200.0,

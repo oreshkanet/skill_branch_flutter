@@ -2,10 +2,11 @@ import 'package:FlutterGalleryApp/color_converter.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
+import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:FlutterGalleryApp/models/photo_list/model.dart' as photoModel;
+import 'package:FlutterGalleryApp/models/models.dart' as models;
 
 class Feed extends StatefulWidget {
   Feed({Key key}) : super(key: key);
@@ -18,7 +19,7 @@ class _FeedState extends State<Feed> {
   ScrollController _scrollController = ScrollController();
   int pageCount = 0;
   bool isLoading = false;
-  var data = List<photoModel.Photo>();
+  var data = List<models.Photo>();
 
   @override
   void initState() {
@@ -48,7 +49,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildListView(BuildContext context, List<photoModel.Photo> photos) {
+  Widget _buildListView(BuildContext context, List<models.Photo> photos) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: ListView.separated(
@@ -77,7 +78,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildItem(photoModel.Photo photoItem) {
+  Widget _buildItem(models.Photo photoItem) {
     final heroTag = 'feedItem_${photoItem.id}';
 
     return Column(
@@ -112,7 +113,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildPhotoMeta(photoModel.Photo photoItem) {
+  Widget _buildPhotoMeta(models.Photo photoItem) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
@@ -142,7 +143,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildPhotoDescription(photoModel.Photo photoItem) {
+  Widget _buildPhotoDescription(models.Photo photoItem) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Text(
@@ -162,7 +163,7 @@ class _FeedState extends State<Feed> {
       setState(() {
         isLoading = true;
       });
-      var tempList = await UnsplashProvider.getPhotos(page, 10);
+      var tempList = await UnsplashRepository().getPhotos(page, 10);
 
       setState(() {
         isLoading = false;
