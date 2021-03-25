@@ -1,5 +1,6 @@
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
+import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -322,7 +323,7 @@ class _FullScreenImageState extends State<FullScreenImage>
 
   Widget _buildRandom() {
     return FutureBuilder(
-      future: UnsplashProvider.getRandomPhotos(9),
+      future: UnsplashRepository().getRandomPhotos(9),
       builder: (context, AsyncSnapshot<models.PhotoList> snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Что-то пошло не так :\'('));

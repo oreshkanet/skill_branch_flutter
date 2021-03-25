@@ -80,8 +80,9 @@ class UnsplashProvider {
     }
   }
 
-  static Future<Photo> getRandomPhoto() async {
-    var response = await http.get('https://api.unsplash.com/photos/random?=1',
+  Future<Photo> getRandomPhoto() async {
+    var response = await http.get(
+        'https://api.unsplash.com/photos/random?count=1',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -91,9 +92,9 @@ class UnsplashProvider {
     }
   }
 
-  static Future<PhotoList> getRandomPhotos(int count) async {
+  Future<PhotoList> getRandomPhotos(int count) async {
     var response = await http.get(
-        'https://api.unsplash.com/photos/random?=$count',
+        'https://api.unsplash.com/photos/random?count=$count',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {

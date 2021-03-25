@@ -30,42 +30,46 @@ class SearchScreen extends StatelessWidget {
   Widget _buildAppBar() {
     return AppBar(
       elevation: 0,
-      title: Column(
-        children: [
-          TextField(
-            style: TextStyle(fontSize: 17),
-            decoration: InputDecoration(
-              hintText: "Search",
-              prefixIcon: Icon(
+      titleSpacing: 0,
+      title: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: TextField(
+          style: TextStyle(fontSize: 17),
+          decoration: InputDecoration(
+            hintText: "Search",
+            prefixIcon: Center(
+              child: Icon(
                 Icons.search,
                 color: AppColors.textGray1,
               ),
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 4.0,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  style: BorderStyle.none,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                borderSide: BorderSide(
-                  style: BorderStyle.none,
-                ),
-              ),
-              fillColor: AppColors.grayButton,
-              filled: true,
             ),
-            autofocus: false,
-            onSubmitted: (text) => _searchBloc.add(
-              SearchStartEvent(keyword: text),
+            prefixIconConstraints:
+                BoxConstraints(maxHeight: 32, minHeight: 32, maxWidth: 32),
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 8.0,
+              vertical: 8.0,
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                style: BorderStyle.none,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(
+                style: BorderStyle.none,
+              ),
+            ),
+            fillColor: AppColors.grayButton,
+            filled: true,
           ),
-        ],
+          autofocus: false,
+          onSubmitted: (text) => _searchBloc.add(
+            SearchStartEvent(keyword: text),
+          ),
+        ),
       ),
       backgroundColor: AppColors.white,
       centerTitle: true,
