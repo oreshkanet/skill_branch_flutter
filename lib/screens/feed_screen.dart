@@ -1,7 +1,6 @@
 import 'package:FlutterGalleryApp/color_converter.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
-import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,6 +101,7 @@ class _FeedState extends State<Feed> {
           child: Hero(
               tag: heroTag,
               child: Photo(
+                isRect: true,
                 photoLink: photoItem.urls.regular,
                 placeholderColor: ColorConverter.decode(photoItem.color),
               )),

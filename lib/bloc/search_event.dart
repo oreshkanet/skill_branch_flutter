@@ -7,8 +7,9 @@ abstract class SearchEvent extends Equatable {
 
 class SearchStartEvent extends SearchEvent {
   final String keyword;
+  final int perPage;
 
-  SearchStartEvent({this.keyword});
+  SearchStartEvent({this.keyword, this.perPage});
 }
 
 class SearchLoadEvent extends SearchEvent {}

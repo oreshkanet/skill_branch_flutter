@@ -18,11 +18,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         final PhotoSearch _loadedPhotoList = await repository.searchPhotos(
           event.keyword,
           0,
-          10,
+          event.perPage,
         );
         yield SearchLoadedState(
           keyword: event.keyword,
           photoList: _loadedPhotoList.results,
+          perPage: event.perPage,
           currPage: 0,
           maxPage: _loadedPhotoList.totalPages,
         );
@@ -35,11 +36,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         if (currentState is SearchLoadedState) {
           if (currentState.currPage == currentState.maxPage) {
             yield currentState;
+            return;
           }
           final PhotoSearch _loadedPhotoList = await repository.searchPhotos(
             currentState.keyword,
-            0,
-            10,
+            currentState.currPage + 1,
+            currentState.perPage,
           );
           currentState.currPage = currentState.currPage + 1;
           currentState.photoList =

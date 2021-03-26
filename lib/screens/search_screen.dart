@@ -14,10 +14,11 @@ import 'package:FlutterGalleryApp/widgets/widgets.dart' as widgets;
 
 class SearchScreen extends StatelessWidget {
   //final _repository = UnsplashRepository();
-  final _searchBloc = SearchBloc(repository: UnsplashRepository());
+  SearchBloc _searchBloc;
 
   @override
   Widget build(BuildContext context) {
+    _searchBloc = SearchBloc(repository: UnsplashRepository());
     return Scaffold(
       appBar: _buildAppBar(),
       body: BlocProvider(
@@ -67,7 +68,7 @@ class SearchScreen extends StatelessWidget {
           ),
           autofocus: false,
           onSubmitted: (text) => _searchBloc.add(
-            SearchStartEvent(keyword: text),
+            SearchStartEvent(keyword: text, perPage: 30),
           ),
         ),
       ),
@@ -94,6 +95,14 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
     super.initState();
 
     _searchBloc = BlocProvider.of<SearchBloc>(context);
+    /*
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent * 0.8) {
+        _searchBloc.add(SearchLoadEvent());
+      }
+    });
+    */
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent * 0.8) {
@@ -124,23 +133,37 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
   Widget _buildListView(BuildContext context, SearchLoadedState state) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: ListView.separated(
-        separatorBuilder: (context, index) {
-          return Divider(
-            height: 1.0,
-            thickness: 1.0,
-            indent: 1.0,
-          );
-        },
+      child: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
-          return index >= state.photoList.length
-              ? _buildBottomLoader()
-              : _buildItem(state.photoList[index]);
+          var indexPhoto = index * 3;
+          if (index < (state.photoList.length ~/ 3)) {
+            if ((index + 1) % 3 == 0) {
+              return _buildRow12(
+                state.photoList[indexPhoto],
+                state.photoList[indexPhoto + 1],
+                state.photoList[indexPhoto + 2],
+              );
+            } else if ((index + 1) % 2 == 0) {
+              return _buildRow21(
+                state.photoList[indexPhoto],
+                state.photoList[indexPhoto + 1],
+                state.photoList[indexPhoto + 2],
+              );
+            } else {
+              return _buildRow111(
+                state.photoList[indexPhoto],
+                state.photoList[indexPhoto + 1],
+                state.photoList[indexPhoto + 2],
+              );
+            }
+          } else {
+            return _buildBottomLoader();
+          }
         },
         controller: _scrollController,
         itemCount: (state.currPage == state.maxPage)
-            ? state.photoList.length
-            : state.photoList.length + 1,
+            ? (state.photoList.length ~/ 3)
+            : (state.photoList.length ~/ 3) + 1,
       ),
     );
   }
@@ -151,36 +174,105 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
     );
   }
 
+  Widget _buildRow111(Photo photoItem1, Photo photoItem2, Photo photoItem3) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            child: _buildItem(photoItem1),
+            flex: 1,
+          ),
+          Expanded(
+            child: _buildItem(photoItem2),
+            flex: 1,
+          ),
+          Expanded(
+            child: _buildItem(photoItem3),
+            flex: 1,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRow12(Photo photoItem1, Photo photoItem2, Photo photoItem3) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Expanded(
+            child: _buildItem(photoItem1),
+            flex: 2,
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              child: Column(
+                children: [
+                  _buildItem(photoItem2),
+                  _buildItem(photoItem3),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRow21(Photo photoItem1, Photo photoItem2, Photo photoItem3) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Column(
+              children: [
+                _buildItem(photoItem1),
+                _buildItem(photoItem2),
+              ],
+            ),
+          ),
+          Expanded(
+            child: _buildItem(photoItem3),
+            flex: 2,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildItem(Photo photoItem) {
     final heroTag = 'feedItem_${photoItem.id}';
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const SizedBox(height: 6),
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              '/fullScreenImage',
-              arguments: FullScreenImageArguments(
-                routeSettings: RouteSettings(
-                  arguments: 'Photo',
-                ),
-                heroTag: heroTag,
-                photoItem: photoItem,
-              ),
-            );
-          },
-          child: Hero(
-              tag: heroTag,
-              child: widgets.Photo(
-                photoLink: photoItem.urls.regular,
-                placeholderColor: ColorConverter.decode(photoItem.color),
-              )),
-        ),
-        const SizedBox(height: 8),
-      ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/fullScreenImage',
+          arguments: FullScreenImageArguments(
+            routeSettings: RouteSettings(
+              arguments: 'Photo',
+            ),
+            heroTag: heroTag,
+            photoItem: photoItem,
+          ),
+        );
+      },
+      child: Hero(
+          tag: heroTag,
+          child: widgets.Photo(
+            paddingHorizontal: 5,
+            paddingVertical: 5,
+            isRect: true,
+            photoLink: photoItem.urls.regular,
+            placeholderColor: ColorConverter.decode(photoItem.color),
+          )),
     );
   }
 
@@ -188,33 +280,5 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }
-}
-
-class SearchButtons extends StatelessWidget {
-  SearchButtons({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final SearchBloc searchBloc = BlocProvider.of<SearchBloc>(context);
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        RaisedButton(
-          child: Text('Search'),
-          onPressed: () {
-            searchBloc.add(SearchStartEvent(keyword: 'AI'));
-          },
-        ),
-        SizedBox(width: 8.0),
-        RaisedButton(
-          child: Text('Cancel'),
-          onPressed: () {
-            SearchCancelEvent();
-          },
-        ),
-      ],
-    );
   }
 }
