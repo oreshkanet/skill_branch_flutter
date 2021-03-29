@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:FlutterGalleryApp/res/bottom_nav_icons_icons.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:FlutterGalleryApp/screens/profile_screen.dart';
 import 'package:FlutterGalleryApp/screens/search_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,7 @@ class _HomeState extends State<Home> {
   List<Widget> padges = [
     Feed(),
     SearchScreen(),
-    Container(),
+    ProfileScreen(),
   ];
 
   @override
