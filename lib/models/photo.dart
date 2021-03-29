@@ -1,3 +1,5 @@
+import 'package:FlutterGalleryApp/models/profile.dart';
+
 class Photo {
   String id;
   String createdAt;
@@ -323,28 +325,6 @@ class SponsorLinks {
     data['portfolio'] = this.portfolio;
     data['following'] = this.following;
     data['followers'] = this.followers;
-    return data;
-  }
-}
-
-class ProfileImage {
-  String small;
-  String medium;
-  String large;
-
-  ProfileImage({this.small, this.medium, this.large});
-
-  ProfileImage.fromJson(Map<String, dynamic> json) {
-    small = json['small'];
-    medium = json['medium'];
-    large = json['large'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['small'] = this.small;
-    data['medium'] = this.medium;
-    data['large'] = this.large;
     return data;
   }
 }

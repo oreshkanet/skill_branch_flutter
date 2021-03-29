@@ -20,8 +20,8 @@ class Profile {
   int followingCount;
   String email;
   ProfileImage profileImage;
-  Badge badge;
-  Links links;
+  ProfileBadge badge;
+  ProfileLinks links;
 
   Profile(
       {this.id,
@@ -72,8 +72,10 @@ class Profile {
     profileImage = json['profile_image'] != null
         ? new ProfileImage.fromJson(json['profile_image'])
         : null;
-    badge = json['badge'] != null ? new Badge.fromJson(json['badge']) : null;
-    links = json['links'] != null ? new Links.fromJson(json['links']) : null;
+    badge =
+        json['badge'] != null ? new ProfileBadge.fromJson(json['badge']) : null;
+    links =
+        json['links'] != null ? new ProfileLinks.fromJson(json['links']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -133,15 +135,15 @@ class ProfileImage {
   }
 }
 
-class Badge {
+class ProfileBadge {
   String title;
   bool primary;
   String slug;
   String link;
 
-  Badge({this.title, this.primary, this.slug, this.link});
+  ProfileBadge({this.title, this.primary, this.slug, this.link});
 
-  Badge.fromJson(Map<String, dynamic> json) {
+  ProfileBadge.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     primary = json['primary'];
     slug = json['slug'];
@@ -158,16 +160,16 @@ class Badge {
   }
 }
 
-class Links {
+class ProfileLinks {
   String self;
   String html;
   String photos;
   String likes;
   String portfolio;
 
-  Links({this.self, this.html, this.photos, this.likes, this.portfolio});
+  ProfileLinks({this.self, this.html, this.photos, this.likes, this.portfolio});
 
-  Links.fromJson(Map<String, dynamic> json) {
+  ProfileLinks.fromJson(Map<String, dynamic> json) {
     self = json['self'];
     html = json['html'];
     photos = json['photos'];
