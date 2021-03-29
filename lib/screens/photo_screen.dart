@@ -199,7 +199,7 @@ class _FullScreenImageState extends State<FullScreenImage>
         children: [
           AnimatedBuilder(
             animation: _controller,
-            child: UserAvatar(
+            child: UserAvatarWidget(
                 avatarLink: widget.photoItem.user.profileImage.medium),
             builder: (context, Widget child) {
               return Opacity(opacity: opacityUserAvatar.value, child: child);
