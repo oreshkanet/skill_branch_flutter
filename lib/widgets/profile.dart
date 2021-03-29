@@ -1,6 +1,8 @@
 import 'package:FlutterGalleryApp/bloc/profile/pofile_state.dart';
 import 'package:FlutterGalleryApp/bloc/profile/profile_bloc.dart';
 import 'package:FlutterGalleryApp/models/profile.dart';
+import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,22 +64,118 @@ class _ProfileWidgetState extends State<StatefulWidget> {
   }
 
   _buildProfileSummery(Profile profile) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        children: [
+          UserAvatarWidget(
+            avatarLink: profile.profileImage.small,
+            size: 75.0,
+          ),
+          SizedBox(width: 17.0),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _buildProfileSummeryName(profile),
+                _buildProfileSummeryFollowers(profile),
+                _buildProfileSummeryLocation(profile),
+                _buildProfileSummeryLink(profile),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildProfileSummeryName(Profile profile) {
+    return Text(
+      profile.name,
+      style: AppStyles.h1Black,
+    );
+  }
+
+  _buildProfileSummeryFollowers(Profile profile) {
     return Row(
       children: [
-        Text(profile.name),
+        Text(profile.followersCount.toString()),
+        Text("followers"),
+        Text(profile.followingCount.toString()),
+        Text("following"),
+      ],
+    );
+  }
+
+  _buildProfileSummeryLocation(Profile profile) {
+    return Row(
+      children: [
+        Icon(Icons.location_on),
+        SizedBox(width: 8.0),
+        Text(profile.location),
+      ],
+    );
+  }
+
+  _buildProfileSummeryLink(Profile profile) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(Icons.link),
+        SizedBox(width: 8.0),
+        Expanded(
+          child: Text(profile.badge.link),
+        ),
       ],
     );
   }
 
   _buildProfileBio(Profile profile) {
-    return Text(
-      profile.bio,
-      maxLines: 3,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.all(10.0),
+      child: Expanded(
+        child: Text(
+          profile.bio,
+          textAlign: TextAlign.justify,
+          maxLines: 3,
+        ),
+      ),
     );
   }
 
   _buildProfileTabs(Profile profile) {
-    return Center();
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(Icons.home),
+                child: Text("Text1"),
+              ),
+              Tab(
+                icon: Icon(AppIcons.like_fill),
+                child: Text("Text2"),
+              ),
+              Tab(
+                icon: Icon(Icons.bookmark),
+                child: Text("Text3"),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            Icon(Icons.directions_car),
+            Icon(Icons.directions_transit),
+            Icon(Icons.directions_bike),
+          ],
+        ),
+      ),
+    );
   }
 
   _buildErrorProfile() {
