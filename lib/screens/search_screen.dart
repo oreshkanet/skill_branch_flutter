@@ -18,7 +18,7 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _searchBloc = SearchBloc(repository: UnsplashRepository());
+    _searchBloc = SearchBloc();
     return Scaffold(
       appBar: _buildAppBar(),
       body: BlocProvider(

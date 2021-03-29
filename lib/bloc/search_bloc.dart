@@ -5,9 +5,21 @@ import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final UnsplashRepository repository;
+  final UnsplashRepository repository = UnsplashRepository();
 
-  SearchBloc({this.repository}) : super(SearchEmptyState());
+  static final SearchBloc _searchBloc = SearchBloc._internal();
+  factory SearchBloc() {
+    return _searchBloc;
+  }
+  SearchBloc._internal() : super(SearchEmptyState());
+
+  @override
+  Future<void> close() async {
+    await super.close();
+  }
+
+  @override
+  SearchState get initialState => SearchEmptyState();
 
   @override
   Stream<SearchState> mapEventToState(SearchEvent event) async* {
