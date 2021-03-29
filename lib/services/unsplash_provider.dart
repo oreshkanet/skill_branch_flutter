@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/models/profile.dart';
-import 'package:FlutterGalleryApp/models/profile_me.dart';
-import 'package:FlutterGalleryApp/models/profile_user.dart';
 import 'package:http/http.dart' as http;
 
 /*
@@ -47,12 +45,12 @@ class UnsplashProvider {
     }
   }
 
-  Future<ProfileMe> getProfileMe(int page, int perPage) async {
+  Future<Profile> getProfileMe(int page, int perPage) async {
     var response = await http.get('https://api.unsplash.com/me',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return ProfileMe.fromJson(json.decode(response.body));
+      return Profile.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error: ${response.reasonPhrase}');
     }
