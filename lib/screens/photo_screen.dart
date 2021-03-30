@@ -1,4 +1,5 @@
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/screens/user_profile_screen.dart';
 import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
@@ -193,14 +194,28 @@ class _FullScreenImageState extends State<FullScreenImage>
   }
 
   Widget _buildPhotoMeta() {
+    final userHeroTag = 'user_${widget.photoItem.user.name}';
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
         children: [
           AnimatedBuilder(
             animation: _controller,
-            child: UserAvatarWidget(
-                avatarLink: widget.photoItem.user.profileImage.medium),
+            child: GestureDetector(
+              child: Hero(
+                tag: userHeroTag + '_avatar',
+                child: UserAvatarWidget(
+                    avatarLink: widget.photoItem.user.profileImage.medium),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, '/userProfile',
+                    arguments: UserProfileScreenArguments(
+                      userName: widget.photoItem.user.name,
+                      heroTag: userHeroTag,
+                    ));
+              },
+            ),
             builder: (context, Widget child) {
               return Opacity(opacity: opacityUserAvatar.value, child: child);
             },
@@ -212,9 +227,12 @@ class _FullScreenImageState extends State<FullScreenImage>
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(
-                  widget.photoItem.user.name,
-                  style: Theme.of(context).textTheme.headline1,
+                Hero(
+                  tag: userHeroTag + '_name',
+                  child: Text(
+                    widget.photoItem.user.name,
+                    style: Theme.of(context).textTheme.headline1,
+                  ),
                 ),
                 Text('@${widget.photoItem.user.username}',
                     style: Theme.of(context)

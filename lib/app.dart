@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/home.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
+import 'package:FlutterGalleryApp/screens/user_profile_screen.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,20 @@ class MyApp extends StatelessWidget {
             photoItem: args.photoItem,
             key: args.key,
           );
-
+          if (Platform.isAndroid) {
+            return MaterialPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
+          } else if (Platform.isIOS) {
+            return CupertinoPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
+          }
+        } else if (settings.name == '/userProfile') {
+          UserProfileScreenArguments args =
+              settings.arguments as UserProfileScreenArguments;
+          final route = UserProfileScreen(
+            heroTag: args.heroTag,
+            userName: args.userName,
+          );
           if (Platform.isAndroid) {
             return MaterialPageRoute(
                 builder: (context) => route, settings: args.routeSettings);
