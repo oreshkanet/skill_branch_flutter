@@ -26,6 +26,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           type: ProfileType.me,
         );
       }
+      if (event is ProfileLoadUserEvent) {
+        yield ProfileLoadingState();
+
+        final Profile _loadedProfile =
+            await _repository.getProfileUser(event.userName);
+        yield ProfileLoadedState(
+          profile: _loadedProfile,
+          userName: event.userName,
+          type: ProfileType.user,
+        );
+      }
     } catch (_, stackTrace) {
       developer.log('$_',
           name: 'ProfileBloc', error: _, stackTrace: stackTrace);
