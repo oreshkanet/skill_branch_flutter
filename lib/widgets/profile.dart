@@ -34,13 +34,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        if (state is ProfileEmptyState) {
+        if (state is EmptyProfileState) {
           return _buildEmptyProfile();
-        } else if (state is ProfileLoadingState) {
+        } else if (state is LoadingProfileState) {
           return _buildLoadingProfile();
-        } else if (state is ProfileLoadedState) {
+        } else if (state is LoadedProfileState) {
           return _buildProfile(state.profile);
-        } else if (state is ProfileErrorState) {
+        } else if (state is ErrorProfileState) {
           return _buildErrorProfile();
         } else {
           return _buildEmptyProfile();
@@ -137,40 +137,52 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   _buildProfileSummeryLocation(Profile profile) {
-    return Row(
-      children: [
-        Icon(Icons.location_on),
-        SizedBox(width: 8.0),
-        Text(profile.location),
-      ],
-    );
+    if (profile.location != null) {
+      return Row(
+        children: [
+          Icon(Icons.location_on),
+          SizedBox(width: 8.0),
+          Text(profile.location),
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   _buildProfileSummeryLink(Profile profile) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(Icons.link),
-        SizedBox(width: 8.0),
-        Expanded(
-          child: Text(profile.badge.link),
-        ),
-      ],
-    );
+    if (profile.badge != null && profile.badge.link != null) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.link),
+          SizedBox(width: 8.0),
+          Expanded(
+            child: Text(profile.badge.link),
+          ),
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   _buildProfileBio(Profile profile) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(10.0),
-      child: Expanded(
-        child: Text(
-          profile.bio,
-          textAlign: TextAlign.justify,
-          maxLines: 3,
+    if (profile.bio != null) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.all(10.0),
+        child: Expanded(
+          child: Text(
+            profile.bio,
+            textAlign: TextAlign.justify,
+            maxLines: 3,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Container();
+    }
   }
 
   _buildProfileTabs(Profile profile) {

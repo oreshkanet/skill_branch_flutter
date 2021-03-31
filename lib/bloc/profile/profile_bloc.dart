@@ -10,37 +10,38 @@ import 'package:bloc/bloc.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UnsplashRepository _repository = UnsplashRepository();
 
-  ProfileBloc() : super(ProfileEmptyState());
+  ProfileBloc() : super(EmptyProfileState());
 
   @override
   Stream<ProfileState> mapEventToState(
     ProfileEvent event,
   ) async* {
     try {
-      if (event is ProfileLoadMeEvent) {
-        yield ProfileLoadingState();
+      if (event is LoadMeProfileEvent) {
+        yield LoadingProfileState();
 
-        final Profile _loadedProfile = await _repository.getProfileMe();
-        yield ProfileLoadedState(
+        final Profile _loadedProfile = await _repository.getMe();
+        yield LoadedProfileState(
           profile: _loadedProfile,
           type: ProfileType.me,
         );
       }
-      if (event is ProfileLoadUserEvent) {
-        yield ProfileLoadingState();
+      if (event is LoadUserProfileEvent) {
+        yield LoadingProfileState();
 
         final Profile _loadedProfile =
-            await _repository.getProfileUser(event.userName);
-        yield ProfileLoadedState(
+            await _repository.getUser(event.userName);
+        yield LoadedProfileState(
           profile: _loadedProfile,
           userName: event.userName,
           type: ProfileType.user,
         );
       }
+      // FIXME: ReloadProfileEvent
     } catch (_, stackTrace) {
       developer.log('$_',
           name: 'ProfileBloc', error: _, stackTrace: stackTrace);
-      yield ProfileErrorState();
+      yield ErrorProfileState();
     }
   }
 }

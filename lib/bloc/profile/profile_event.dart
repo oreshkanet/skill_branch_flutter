@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 
 abstract class ProfileEvent {}
 
-class ProfileLoadMeEvent extends ProfileEvent {}
+class LoadMeProfileEvent extends ProfileEvent {}
 
-class ProfileLoadUserEvent extends ProfileEvent {
+class LoadUserProfileEvent extends ProfileEvent {
   final String userName;
 
-  ProfileLoadUserEvent({@required this.userName});
+  LoadUserProfileEvent({@required this.userName});
 }
 
-class ProfileReloadEvent extends ProfileEvent {}
+class ReloadProfileEvent extends ProfileEvent {}

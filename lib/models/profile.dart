@@ -6,7 +6,7 @@ class Profile {
   String firstName;
   String lastName;
   String twitterUsername;
-  Null portfolioUrl;
+  String portfolioUrl;
   String bio;
   String location;
   int totalLikes;

@@ -33,7 +33,7 @@ class UserProfileScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) {
           ProfileBloc profileBloc = ProfileBloc();
-          profileBloc.add(ProfileLoadUserEvent(userName: this.userName));
+          profileBloc.add(LoadUserProfileEvent(userName: this.userName));
           return profileBloc;
         }, //SearchBloc(repository: _repository),
         child: ProfileWidget(heroTag: heroTag),

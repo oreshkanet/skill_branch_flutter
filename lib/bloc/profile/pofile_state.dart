@@ -4,20 +4,20 @@ enum ProfileType { me, user }
 
 abstract class ProfileState {}
 
-class ProfileEmptyState extends ProfileState {}
+class EmptyProfileState extends ProfileState {}
 
-class ProfileLoadingState extends ProfileState {}
+class LoadingProfileState extends ProfileState {}
 
-class ProfileLoadedState extends ProfileState {
+class LoadedProfileState extends ProfileState {
   String userName;
   Profile profile;
   ProfileType type;
 
-  ProfileLoadedState({
+  LoadedProfileState({
     this.type,
     this.profile,
     this.userName,
   });
 }
 
-class ProfileErrorState extends ProfileState {}
+class ErrorProfileState extends ProfileState {}

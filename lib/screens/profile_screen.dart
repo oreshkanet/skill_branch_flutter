@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) {
           ProfileBloc profileBloc = ProfileBloc();
-          profileBloc.add(ProfileLoadMeEvent());
+          profileBloc.add(LoadMeProfileEvent());
           return profileBloc;
         },
         child: ProfileWidget(),
