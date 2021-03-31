@@ -45,7 +45,9 @@ class UnsplashProvider {
     }
   }
 
-  Future<Profile> getProfileMe(int page, int perPage) async {
+  // ME
+
+  Future<Profile> getMe() async {
     var response = await http.get('https://api.unsplash.com/me',
         headers: {'Authorization': 'Bearer $authToken'});
 
@@ -56,7 +58,9 @@ class UnsplashProvider {
     }
   }
 
-  Future<Profile> getProfileUser(String userName) async {
+  // USER
+
+  Future<Profile> getUser(String userName) async {
     var response = await http.get('https://api.unsplash.com/users/$userName',
         headers: {'Authorization': 'Bearer $authToken'});
 
@@ -66,6 +70,44 @@ class UnsplashProvider {
       throw Exception('Error: ${response.reasonPhrase}');
     }
   }
+
+  Future<PhotoList> getUserPhotos(String userName, int perPage) async {
+    var response = await http.get(
+        'https://api.unsplash.com/users/$userName/photos?per_page=$perPage',
+        headers: {'Authorization': 'Bearer $authToken'});
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return PhotoList.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Error: ${response.reasonPhrase}');
+    }
+  }
+
+  Future<PhotoList> getUserLikes(String userName, int perPage) async {
+    var response = await http.get(
+        'https://api.unsplash.com/users/$userName/likes?per_page=$perPage',
+        headers: {'Authorization': 'Bearer $authToken'});
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return PhotoList.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Error: ${response.reasonPhrase}');
+    }
+  }
+
+  Future<PhotoList> getUserCollections(String userName, int perPage) async {
+    var response = await http.get(
+        'https://api.unsplash.com/users/$userName/collections?per_page=$perPage',
+        headers: {'Authorization': 'Bearer $authToken'});
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return PhotoList.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Error: ${response.reasonPhrase}');
+    }
+  }
+
+  // PHOTOS
 
   Future<PhotoList> getPhotos(int page, int perPage) async {
     var response = await http.get(
