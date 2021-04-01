@@ -107,7 +107,8 @@ class _FullScreenImageState extends State<FullScreenImage>
                 children: <Widget>[
                   Hero(
                     tag: widget.heroTag,
-                    child: Photo(photoLink: widget.photoItem.urls.regular),
+                    child:
+                        PhotoWidget(photoLink: widget.photoItem.urls.regular),
                   ),
                   const SizedBox(height: 10),
                   _buildPhotoDescription(),
@@ -211,7 +212,7 @@ class _FullScreenImageState extends State<FullScreenImage>
               onTap: () {
                 Navigator.pushNamed(context, '/userProfile',
                     arguments: UserProfileScreenArguments(
-                      userName: widget.photoItem.user.name,
+                      userName: widget.photoItem.user.username,
                       heroTag: userHeroTag,
                     ));
               },
@@ -354,7 +355,7 @@ class _FullScreenImageState extends State<FullScreenImage>
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             children: snapshot.data.photos.map((models.Photo photoItem) {
-              return Photo(
+              return PhotoWidget(
                 photoLink: photoItem.urls.small,
                 paddingHorizontal: 0,
                 paddingVertical: 0,
@@ -381,7 +382,7 @@ class _FullScreenImageState extends State<FullScreenImage>
         (BuildContext context, int index) {
           return Container(
               height: MediaQuery.of(context).size.width / 4,
-              child: Photo(
+              child: PhotoWidget(
                 photoLink: photoList[index].urls.small,
               ));
         },

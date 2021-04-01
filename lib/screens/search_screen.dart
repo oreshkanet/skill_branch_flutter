@@ -266,7 +266,7 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
       },
       child: Hero(
           tag: heroTag,
-          child: widgets.Photo(
+          child: widgets.PhotoWidget(
             paddingHorizontal: 5,
             paddingVertical: 5,
             isRect: true,

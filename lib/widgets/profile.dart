@@ -1,8 +1,10 @@
+import 'package:FlutterGalleryApp/bloc/photoList/photo_list_bloc.dart';
 import 'package:FlutterGalleryApp/bloc/profile/pofile_state.dart';
 import 'package:FlutterGalleryApp/bloc/profile/profile_bloc.dart';
+import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/models/profile.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
-import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
+import 'package:FlutterGalleryApp/widgets/photoGrid.dart';
 import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +24,19 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget> {
   ProfileBloc _profileBloc;
+  PhotoListBloc _profilePhotoListBloc;
+  PhotoListBloc _profilePhotoLikesBloc;
+  PhotoListBloc _profilePhotoCollectionsBloc;
 
   @override
   void initState() {
     super.initState();
 
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
+
+    _profilePhotoListBloc = PhotoListBloc();
+    _profilePhotoLikesBloc = PhotoListBloc();
+    _profilePhotoCollectionsBloc = PhotoListBloc();
   }
 
   @override
@@ -39,9 +48,14 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         } else if (state is LoadingProfileState) {
           return _buildLoadingProfile();
         } else if (state is LoadedProfileState) {
-          return _buildProfile(state.profile);
+          return _buildProfile(
+            state.profile,
+            state.userPhotos,
+            state.userLikes,
+            state.userCollections,
+          );
         } else if (state is ErrorProfileState) {
-          return _buildErrorProfile();
+          return _buildErrorProfile(state.errorText);
         } else {
           return _buildEmptyProfile();
         }
@@ -61,12 +75,23 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
-  _buildProfile(Profile profile) {
+  _buildProfile(
+    Profile profile,
+    PhotoList userPhotos,
+    PhotoList userLikes,
+    PhotoList userCollections,
+  ) {
     return Column(
       children: [
         _buildProfileSummery(profile),
         _buildProfileBio(profile),
-        _buildProfileTabs(profile),
+        Expanded(
+          child: _ProfileTabWidget(
+            userPhotos: userPhotos,
+            userLikes: userLikes,
+            userCollections: userCollections,
+          ),
+        ),
       ],
     );
   }
@@ -185,30 +210,35 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     }
   }
 
-  _buildProfileTabs(Profile profile) {
-    return Expanded(
-      child: _TabWidget(),
-    );
-  }
-
-  _buildErrorProfile() {
-    return Center();
+  _buildErrorProfile(String errorText) {
+    return Center(child: Text(errorText));
   }
 }
 
-class _TabWidget extends StatefulWidget {
-  const _TabWidget({Key key}) : super(key: key);
+class _ProfileTabWidget extends StatefulWidget {
+  const _ProfileTabWidget({
+    this.userPhotos,
+    this.userLikes,
+    this.userCollections,
+    Key key,
+  }) : super(key: key);
+
+  final PhotoList userPhotos;
+  final PhotoList userLikes;
+  final PhotoList userCollections;
 
   @override
-  _TabWidgetState createState() => _TabWidgetState();
+  _ProfileTabWidgetState createState() => _ProfileTabWidgetState();
 }
 
-class _TabWidgetState extends State<_TabWidget> with TickerProviderStateMixin {
+class _ProfileTabWidgetState extends State<_ProfileTabWidget>
+    with TickerProviderStateMixin {
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -242,15 +272,15 @@ class _TabWidgetState extends State<_TabWidget> with TickerProviderStateMixin {
       ),
       body: TabBarView(
         controller: _tabController,
-        children: const <Widget>[
-          Center(
-            child: Text('It\'s cloudy here'),
+        children: <Widget>[
+          PhotoGridWidget(
+            photoList: widget.userPhotos,
           ),
-          Center(
-            child: Text('It\'s rainy here'),
+          PhotoGridWidget(
+            photoList: widget.userLikes,
           ),
-          Center(
-            child: Text('It\'s sunny here'),
+          PhotoGridWidget(
+            photoList: widget.userCollections,
           ),
         ],
       ),

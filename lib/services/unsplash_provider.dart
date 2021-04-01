@@ -67,7 +67,7 @@ class UnsplashProvider {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return Profile.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Error: ${response.reasonPhrase}');
+      throw Exception(response.reasonPhrase);
     }
   }
 

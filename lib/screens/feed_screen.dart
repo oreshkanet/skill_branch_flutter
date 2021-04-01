@@ -1,6 +1,7 @@
 import 'package:FlutterGalleryApp/color_converter.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
+import 'package:FlutterGalleryApp/screens/user_profile_screen.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -100,7 +101,7 @@ class _FeedState extends State<Feed> {
           },
           child: Hero(
               tag: heroTag,
-              child: Photo(
+              child: PhotoWidget(
                 isRect: true,
                 photoLink: photoItem.urls.regular,
                 placeholderColor: ColorConverter.decode(photoItem.color),
@@ -114,6 +115,8 @@ class _FeedState extends State<Feed> {
   }
 
   Widget _buildPhotoMeta(models.Photo photoItem) {
+    final userHeroTag = 'user_${photoItem.user.name}';
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
@@ -121,7 +124,22 @@ class _FeedState extends State<Feed> {
         children: <Widget>[
           Row(
             children: [
-              UserAvatarWidget(avatarLink: photoItem.user.profileImage.small),
+              GestureDetector(
+                child: Hero(
+                  tag: userHeroTag + '_avatar',
+                  child: UserAvatarWidget(
+                      avatarLink: photoItem.user.profileImage.medium),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/userProfile',
+                      arguments: UserProfileScreenArguments(
+                        userName: photoItem.user.username,
+                        heroTag: userHeroTag,
+                      ));
+                },
+              ),
+
+              //UserAvatarWidget(avatarLink: photoItem.user.profileImage.small),
               const SizedBox(width: 10),
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,7 +1,6 @@
 import 'package:FlutterGalleryApp/bloc/profile/profile_bloc.dart';
 import 'package:FlutterGalleryApp/bloc/profile/profile_event.dart';
 import 'package:FlutterGalleryApp/res/colors.dart';
-import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
 import 'package:FlutterGalleryApp/widgets/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
