@@ -1,12 +1,11 @@
 import 'package:FlutterGalleryApp/models/models.dart';
-import 'package:FlutterGalleryApp/models/profile.dart';
 
 class SamplesProvider {
   // ME
-  Future<Profile> getMe() async {
+  Future<User> getMe() async {
     await Future.delayed(Duration(seconds: 2));
 
-    return Profile.fromJson({
+    return User.fromJson({
       "id": "Yb2EXlOssk4",
       "updated_at": "2020-11-20T02:18:32-05:00",
       "username": "oreshkanet",
@@ -57,10 +56,10 @@ class SamplesProvider {
 
   // USER
 
-  Future<Profile> getUser(String userName) async {
+  Future<User> getUser(String userName) async {
     await Future.delayed(Duration(seconds: 2));
 
-    return Profile.fromJson({
+    return User.fromJson({
       "id": "eySMK9KwmJU",
       "updated_at": "2021-03-30T22:47:02-04:00",
       "username": "samsungmemory",
@@ -1692,8 +1691,9 @@ class SamplesProvider {
     ]);
   }
 
-  Future<PhotoList> getUserCollections(String userName, int perPage) async {
-    return PhotoList.fromJson([
+  Future<CollectionsList> getUserCollections(
+      String userName, int perPage) async {
+    return CollectionsList.fromJson([
       {
         "id": "9753294",
         "title": "BOBLOG",
@@ -1855,7 +1855,7 @@ class SamplesProvider {
         "cover_photo": {
           "id": "e31ANd1PXUw",
           "created_at": "2018-06-29T20:39:39-04:00",
-          "updated_at": "2021-03-30T20:04:41-04:00",
+          "updated_at": "2021-04-04T20:04:17-04:00",
           "promoted_at": "2018-06-30T11:12:50-04:00",
           "width": 3885,
           "height": 2857,
@@ -1883,13 +1883,13 @@ class SamplesProvider {
                 "https://api.unsplash.com/photos/e31ANd1PXUw/download"
           },
           "categories": [],
-          "likes": 488,
+          "likes": 490,
           "liked_by_user": false,
           "current_user_collections": [],
           "sponsorship": null,
           "user": {
             "id": "a6RHorWL5ho",
-            "updated_at": "2021-03-30T21:56:55-04:00",
+            "updated_at": "2021-04-04T19:02:25-04:00",
             "username": "lastly",
             "name": "Tyler Lastovich",
             "first_name": "Tyler",
@@ -1918,7 +1918,7 @@ class SamplesProvider {
             },
             "instagram_username": "lastlystudios",
             "total_collections": 10,
-            "total_likes": 184,
+            "total_likes": 182,
             "total_photos": 112,
             "accepted_tos": true,
             "for_hire": false
@@ -1928,7 +1928,7 @@ class SamplesProvider {
           {
             "id": "e31ANd1PXUw",
             "created_at": "2018-06-29T20:39:39-04:00",
-            "updated_at": "2021-03-30T20:04:41-04:00",
+            "updated_at": "2021-04-04T20:04:17-04:00",
             "blur_hash": "LOA^5qWW00axxaRkWBxu4nWB_3of",
             "urls": {
               "raw":

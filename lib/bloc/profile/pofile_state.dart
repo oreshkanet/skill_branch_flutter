@@ -1,5 +1,4 @@
 import 'package:FlutterGalleryApp/models/models.dart';
-import 'package:FlutterGalleryApp/models/profile.dart';
 
 enum ProfileType { me, user }
 
@@ -12,7 +11,7 @@ class LoadingProfileState extends ProfileState {}
 class LoadedProfileState extends ProfileState {
   ProfileType type;
   String userName;
-  Profile profile;
+  User profile;
   PhotoList userPhotos;
   PhotoList userLikes;
   PhotoList userCollections;

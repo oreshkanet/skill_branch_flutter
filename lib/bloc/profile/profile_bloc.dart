@@ -4,7 +4,6 @@ import 'dart:developer' as developer;
 import 'package:FlutterGalleryApp/bloc/profile/pofile_state.dart';
 import 'package:FlutterGalleryApp/bloc/profile/profile_event.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
-import 'package:FlutterGalleryApp/models/profile.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:bloc/bloc.dart';
 
@@ -20,7 +19,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     try {
       yield LoadingProfileState();
 
-      Profile _loadedProfile;
+      User _loadedProfile;
       ProfileType _profileType;
       String _userName = "";
       if (event is LoadMeProfileEvent) {
@@ -34,7 +33,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         _userName = event.userName;
       }
 
-      List<PhotoList> photoLists = await Future.wait([
+      List<dynamic> photoLists = await Future.wait([
         _repository.getUserPhotos(_userName, 9),
         _repository.getUserLikes(_userName, 9),
         _repository.getUserCollections(_userName, 9),

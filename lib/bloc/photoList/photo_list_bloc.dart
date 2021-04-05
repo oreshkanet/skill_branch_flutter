@@ -50,7 +50,7 @@ class PhotoListBloc extends Bloc<PhotoListEvent, PhotoListState> {
       if (event is LoadUserLikesPhotoListEvent) {
         yield LoadingPhotoListState();
 
-        final PhotoList _result =
+        final CollectionsList _result =
             await _repository.getUserCollections(event.userName, 9);
         yield LoadedPhotoListState(
           photoList: _result,

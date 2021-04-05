@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:FlutterGalleryApp/models/models.dart';
-import 'package:FlutterGalleryApp/models/profile.dart';
 import 'package:http/http.dart' as http;
 
 /*
@@ -47,12 +46,12 @@ class UnsplashProvider {
 
   // ME
 
-  Future<Profile> getMe() async {
+  Future<User> getMe() async {
     var response = await http.get('https://api.unsplash.com/me',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return Profile.fromJson(json.decode(response.body));
+      return User.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error: ${response.reasonPhrase}');
     }
@@ -60,12 +59,12 @@ class UnsplashProvider {
 
   // USER
 
-  Future<Profile> getUser(String userName) async {
+  Future<User> getUser(String userName) async {
     var response = await http.get('https://api.unsplash.com/users/$userName',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return Profile.fromJson(json.decode(response.body));
+      return User.fromJson(json.decode(response.body));
     } else {
       throw Exception(response.reasonPhrase);
     }
@@ -95,13 +94,14 @@ class UnsplashProvider {
     }
   }
 
-  Future<PhotoList> getUserCollections(String userName, int perPage) async {
+  Future<CollectionsList> getUserCollections(
+      String userName, int perPage) async {
     var response = await http.get(
         'https://api.unsplash.com/users/$userName/collections?per_page=$perPage',
         headers: {'Authorization': 'Bearer $authToken'});
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return PhotoList.fromJson(json.decode(response.body));
+      return CollectionsList.fromJson(json.decode(response.body));
     } else {
       throw Exception('Error: ${response.reasonPhrase}');
     }

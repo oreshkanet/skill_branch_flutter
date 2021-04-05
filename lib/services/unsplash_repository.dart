@@ -1,5 +1,4 @@
 import 'package:FlutterGalleryApp/models/models.dart';
-import 'package:FlutterGalleryApp/models/profile.dart';
 import 'package:FlutterGalleryApp/services/samples_provider.dart';
 import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 
@@ -10,11 +9,11 @@ class UnsplashRepository {
 
   //ME
 
-  Future<Profile> getMe() => _provider.getMe();
+  Future<User> getMe() => _provider.getMe();
 
   // USER
 
-  Future<Profile> getUser(String userName) => _provider.getUser(userName);
+  Future<User> getUser(String userName) => _provider.getUser(userName);
 
   Future<PhotoList> getUserPhotos(String userName, int perPage) =>
       _provider.getUserPhotos(userName, perPage);
@@ -22,7 +21,7 @@ class UnsplashRepository {
   Future<PhotoList> getUserLikes(String userName, int perPage) =>
       _provider.getUserLikes(userName, perPage);
 
-  Future<PhotoList> getUserCollections(String userName, int perPage) =>
+  Future<CollectionsList> getUserCollections(String userName, int perPage) =>
       _provider.getUserCollections(userName, perPage);
 
   // PHOTOS

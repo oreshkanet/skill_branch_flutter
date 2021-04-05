@@ -1,4 +1,4 @@
-class Profile {
+class User {
   String id;
   String updatedAt;
   String username;
@@ -20,10 +20,10 @@ class Profile {
   int followingCount;
   String email;
   ProfileImage profileImage;
-  ProfileBadge badge;
-  ProfileLinks links;
+  UserBadge badge;
+  UserLinks links;
 
-  Profile(
+  User(
       {this.id,
       this.updatedAt,
       this.username,
@@ -48,7 +48,7 @@ class Profile {
       this.badge,
       this.links});
 
-  Profile.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     updatedAt = json['updated_at'];
     username = json['username'];
@@ -73,9 +73,9 @@ class Profile {
         ? new ProfileImage.fromJson(json['profile_image'])
         : null;
     badge =
-        json['badge'] != null ? new ProfileBadge.fromJson(json['badge']) : null;
+        json['badge'] != null ? new UserBadge.fromJson(json['badge']) : null;
     links =
-        json['links'] != null ? new ProfileLinks.fromJson(json['links']) : null;
+        json['links'] != null ? new UserLinks.fromJson(json['links']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -135,15 +135,15 @@ class ProfileImage {
   }
 }
 
-class ProfileBadge {
+class UserBadge {
   String title;
   bool primary;
   String slug;
   String link;
 
-  ProfileBadge({this.title, this.primary, this.slug, this.link});
+  UserBadge({this.title, this.primary, this.slug, this.link});
 
-  ProfileBadge.fromJson(Map<String, dynamic> json) {
+  UserBadge.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     primary = json['primary'];
     slug = json['slug'];
@@ -160,16 +160,16 @@ class ProfileBadge {
   }
 }
 
-class ProfileLinks {
+class UserLinks {
   String self;
   String html;
   String photos;
   String likes;
   String portfolio;
 
-  ProfileLinks({this.self, this.html, this.photos, this.likes, this.portfolio});
+  UserLinks({this.self, this.html, this.photos, this.likes, this.portfolio});
 
-  ProfileLinks.fromJson(Map<String, dynamic> json) {
+  UserLinks.fromJson(Map<String, dynamic> json) {
     self = json['self'];
     html = json['html'];
     photos = json['photos'];
