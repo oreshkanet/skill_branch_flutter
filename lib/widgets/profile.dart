@@ -2,8 +2,8 @@ import 'package:FlutterGalleryApp/bloc/photoList/photo_list_bloc.dart';
 import 'package:FlutterGalleryApp/bloc/profile/pofile_state.dart';
 import 'package:FlutterGalleryApp/bloc/profile/profile_bloc.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
-import 'package:FlutterGalleryApp/models/profile.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/widgets/photo.dart';
 import 'package:FlutterGalleryApp/widgets/photoGrid.dart';
 import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,10 +76,10 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   _buildProfile(
-    Profile profile,
+    User profile,
     PhotoList userPhotos,
     PhotoList userLikes,
-    PhotoList userCollections,
+    CollectionsList userCollections,
   ) {
     return Column(
       children: [
@@ -96,7 +96,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
-  _buildProfileSummery(Profile profile) {
+  _buildProfileSummery(User profile) {
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: Row(
@@ -120,7 +120,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
-  _buildProfileSummeryAvatar(Profile profile) {
+  _buildProfileSummeryAvatar(User profile) {
     final avatarWidget = UserAvatarWidget(
       avatarLink: profile.profileImage.small,
       size: 75.0,
@@ -135,7 +135,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     }
   }
 
-  _buildProfileSummeryName(Profile profile) {
+  _buildProfileSummeryName(User profile) {
     final nameWidget = Text(
       profile.name,
       style: AppStyles.h1Black,
@@ -150,7 +150,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     }
   }
 
-  _buildProfileSummeryFollowers(Profile profile) {
+  _buildProfileSummeryFollowers(User profile) {
     return Row(
       children: [
         Text(profile.followersCount.toString()),
@@ -161,7 +161,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 
-  _buildProfileSummeryLocation(Profile profile) {
+  _buildProfileSummeryLocation(User profile) {
     if (profile.location != null) {
       return Row(
         children: [
@@ -175,7 +175,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     }
   }
 
-  _buildProfileSummeryLink(Profile profile) {
+  _buildProfileSummeryLink(User profile) {
     if (profile.badge != null && profile.badge.link != null) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,7 +192,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     }
   }
 
-  _buildProfileBio(Profile profile) {
+  _buildProfileBio(User profile) {
     if (profile.bio != null) {
       return Container(
         width: MediaQuery.of(context).size.width,
@@ -225,7 +225,7 @@ class _ProfileTabWidget extends StatefulWidget {
 
   final PhotoList userPhotos;
   final PhotoList userLikes;
-  final PhotoList userCollections;
+  final CollectionsList userCollections;
 
   @override
   _ProfileTabWidgetState createState() => _ProfileTabWidgetState();
@@ -279,10 +279,28 @@ class _ProfileTabWidgetState extends State<_ProfileTabWidget>
           PhotoGridWidget(
             photoList: widget.userLikes,
           ),
-          PhotoGridWidget(
-            photoList: widget.userCollections,
-          ),
+          _buildUserCollections(widget.userCollections),
         ],
+      ),
+    );
+  }
+
+  _buildUserCollections(CollectionsList userCollections) {
+    return Center(
+      child: GridView.count(
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        padding: EdgeInsets.all(10.0),
+        children: List.generate(
+          userCollections.collections.length,
+          (index) => PhotoWidget(
+            photoLink: userCollections.collections[index].coverPhoto.urls.small,
+            paddingHorizontal: 0.0,
+            paddingVertical: 0.0,
+            isRect: true,
+          ),
+        ),
       ),
     );
   }

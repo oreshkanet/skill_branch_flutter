@@ -16,6 +16,8 @@ class PhotoListBloc extends Bloc<PhotoListEvent, PhotoListState> {
   Stream<PhotoListState> mapEventToState(
     PhotoListEvent event,
   ) async* {
+    final currentState = state;
+
     try {
       // TODO: Кучу кода можно вынести в отдельную процедуру и не повторять одно и то же
       if (event is LoadRandomPhotoListEvent) {
@@ -23,40 +25,42 @@ class PhotoListBloc extends Bloc<PhotoListEvent, PhotoListState> {
 
         final PhotoList _result = await _repository.getRandomPhotos(9);
         yield LoadedPhotoListState(
-          photoList: _result,
           type: PhotoListType.random,
+          photoList: _result,
+          perPage: 9,
+          currPage: 1,
+          lastPage: true,
         );
       }
       if (event is LoadUserPhotosPhotoListEvent) {
         yield LoadingPhotoListState();
 
         final PhotoList _result =
-            await _repository.getUserPhotos(event.userName, 9);
+            await _repository.getUserPhotos(event.userName, event.perPage);
         yield LoadedPhotoListState(
-          photoList: _result,
           type: PhotoListType.userPhotos,
+          userName: event.userName,
+          photoList: _result,
+          perPage: event.perPage,
+          lastPage: (_result.photos.length < event.perPage),
         );
       }
       if (event is LoadUserLikesPhotoListEvent) {
         yield LoadingPhotoListState();
 
         final PhotoList _result =
-            await _repository.getUserLikes(event.userName, 9);
+            await _repository.getUserLikes(event.userName, event.perPage);
         yield LoadedPhotoListState(
-          photoList: _result,
           type: PhotoListType.userPhotos,
+          userName: event.userName,
+          photoList: _result,
+          perPage: event.perPage,
+          lastPage: (_result.photos.length < event.perPage),
         );
       }
-      if (event is LoadUserLikesPhotoListEvent) {
-        yield LoadingPhotoListState();
 
-        final CollectionsList _result =
-            await _repository.getUserCollections(event.userName, 9);
-        yield LoadedPhotoListState(
-          photoList: _result,
-          type: PhotoListType.userPhotos,
-        );
-      }
+      if (event is LoadUserLikesPhotoListEvent) {}
+
       //FIXME:  ReloadPhotoListEvent
     } catch (_, stackTrace) {
       developer.log('$_',

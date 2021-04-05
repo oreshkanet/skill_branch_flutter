@@ -14,7 +14,7 @@ class LoadedProfileState extends ProfileState {
   User profile;
   PhotoList userPhotos;
   PhotoList userLikes;
-  PhotoList userCollections;
+  CollectionsList userCollections;
 
   LoadedProfileState({
     this.type,
