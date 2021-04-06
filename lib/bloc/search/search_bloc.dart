@@ -1,5 +1,5 @@
-import 'package:FlutterGalleryApp/bloc/search_event.dart';
-import 'package:FlutterGalleryApp/bloc/search_state.dart';
+import 'package:FlutterGalleryApp/bloc/search/search_event.dart';
+import 'package:FlutterGalleryApp/bloc/search/search_state.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
