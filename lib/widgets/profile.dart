@@ -1,4 +1,5 @@
 import 'package:FlutterGalleryApp/bloc/photoList/photo_list_bloc.dart';
+import 'package:FlutterGalleryApp/bloc/photoList/photo_list_event.dart';
 import 'package:FlutterGalleryApp/bloc/profile/pofile_state.dart';
 import 'package:FlutterGalleryApp/bloc/profile/profile_bloc.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
@@ -24,19 +25,12 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget> {
   ProfileBloc _profileBloc;
-  PhotoListBloc _profilePhotoListBloc;
-  PhotoListBloc _profilePhotoLikesBloc;
-  PhotoListBloc _profilePhotoCollectionsBloc;
 
   @override
   void initState() {
     super.initState();
 
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
-
-    _profilePhotoListBloc = PhotoListBloc();
-    _profilePhotoLikesBloc = PhotoListBloc();
-    _profilePhotoCollectionsBloc = PhotoListBloc();
   }
 
   @override
@@ -87,6 +81,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         _buildProfileBio(profile),
         Expanded(
           child: _ProfileTabWidget(
+            userName: profile.username,
             userPhotos: userPhotos,
             userLikes: userLikes,
             userCollections: userCollections,
@@ -217,12 +212,14 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
 class _ProfileTabWidget extends StatefulWidget {
   const _ProfileTabWidget({
+    this.userName,
     this.userPhotos,
     this.userLikes,
     this.userCollections,
     Key key,
   }) : super(key: key);
 
+  final String userName;
   final PhotoList userPhotos;
   final PhotoList userLikes;
   final CollectionsList userCollections;
@@ -234,12 +231,18 @@ class _ProfileTabWidget extends StatefulWidget {
 class _ProfileTabWidgetState extends State<_ProfileTabWidget>
     with TickerProviderStateMixin {
   TabController _tabController;
+  PhotoListBloc _userPhotoBloc;
+  PhotoListBloc _userLikesBloc;
 
   @override
   void initState() {
     super.initState();
 
     _tabController = TabController(length: 3, vsync: this);
+    _userPhotoBloc = PhotoListBloc();
+    _userPhotoBloc.add(LoadUserPhotosPhotoListEvent(userName: widget.userName));
+    _userLikesBloc = PhotoListBloc();
+    _userLikesBloc.add(LoadUserLikesPhotoListEvent(userName: widget.userName));
   }
 
   @override
@@ -273,11 +276,17 @@ class _ProfileTabWidgetState extends State<_ProfileTabWidget>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          PhotoGridWidget(
-            photoList: widget.userPhotos,
+          BlocProvider(
+            create: (context) {
+              return _userPhotoBloc;
+            },
+            child: PhotoGridWidget(),
           ),
-          PhotoGridWidget(
-            photoList: widget.userLikes,
+          BlocProvider(
+            create: (context) {
+              return _userLikesBloc;
+            },
+            child: PhotoGridWidget(),
           ),
           _buildUserCollections(widget.userCollections),
         ],
