@@ -39,7 +39,7 @@ class PhotoListBloc extends Bloc<PhotoListEvent, PhotoListState> {
             await _repository.getUserPhotos(event.userName, event.perPage);
         yield LoadedPhotoListState(
           type: PhotoListType.userPhotos,
-          userName: event.userName,
+          id: event.userName,
           photoList: _result,
           perPage: event.perPage,
           lastPage: (_result.photos.length < event.perPage),
@@ -52,14 +52,29 @@ class PhotoListBloc extends Bloc<PhotoListEvent, PhotoListState> {
             await _repository.getUserLikes(event.userName, event.perPage);
         yield LoadedPhotoListState(
           type: PhotoListType.userPhotos,
-          userName: event.userName,
+          id: event.userName,
           photoList: _result,
           perPage: event.perPage,
           lastPage: (_result.photos.length < event.perPage),
         );
       }
+      if (event is LoadCollectionPhotoListEvent) {
+        yield LoadingPhotoListState();
 
-      if (event is LoadUserLikesPhotoListEvent) {}
+        final PhotoList _result = await _repository.getCollectionPhotos(
+          event.collectionId,
+          1,
+          event.perPage,
+        );
+        yield LoadedPhotoListState(
+          type: PhotoListType.collectionPhotos,
+          id: event.collectionId,
+          photoList: _result,
+          perPage: event.perPage,
+          currPage: 1,
+          lastPage: (_result.photos.length < event.perPage),
+        );
+      }
 
       //FIXME:  ReloadPhotoListEvent
     } catch (_, stackTrace) {

@@ -5,6 +5,7 @@ enum PhotoListType {
   random,
   userPhotos,
   userLikes,
+  collectionPhotos,
 }
 
 abstract class PhotoListState {}
@@ -15,8 +16,8 @@ class LoadingPhotoListState extends PhotoListState {}
 
 class LoadedPhotoListState extends PhotoListState {
   PhotoListType type;
-  String userName;
   PhotoList photoList;
+  String id;
   int perPage;
   int currPage;
   bool lastPage;
@@ -24,7 +25,7 @@ class LoadedPhotoListState extends PhotoListState {
   LoadedPhotoListState({
     @required this.type,
     @required this.photoList,
-    this.userName,
+    this.id,
     this.perPage,
     this.currPage,
     this.lastPage,

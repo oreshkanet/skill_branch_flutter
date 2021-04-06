@@ -3,7 +3,7 @@ import 'package:FlutterGalleryApp/models/models.dart';
 class SamplesProvider {
   // ME
   Future<User> getMe() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     return User.fromJson({
       "id": "Yb2EXlOssk4",
@@ -57,7 +57,7 @@ class SamplesProvider {
   // USER
 
   Future<User> getUser(String userName) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     return User.fromJson({
       "id": "eySMK9KwmJU",
@@ -770,7 +770,7 @@ class SamplesProvider {
   }
 
   Future<PhotoList> getUserPhotos(String userName, int perPage) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     return PhotoList.fromJson([
       {
@@ -2719,7 +2719,7 @@ class SamplesProvider {
   }
 
   Future<PhotoList> getCollectionPhotos(
-          int collectionId, int page, int perPage) =>
+          String collectionId, int page, int perPage) =>
       getPhotos(page, perPage);
 
   Future<PhotoSearch> searchPhotos(

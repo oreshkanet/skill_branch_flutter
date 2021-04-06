@@ -1,6 +1,7 @@
 import 'package:FlutterGalleryApp/bloc/bloc.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/widgets/collectionGrid.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';
 import 'package:FlutterGalleryApp/widgets/photoGrid.dart';
 import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
@@ -230,6 +231,7 @@ class _ProfileTabWidgetState extends State<_ProfileTabWidget>
   TabController _tabController;
   PhotoListBloc _userPhotoBloc;
   PhotoListBloc _userLikesBloc;
+  CollectionsListBloc _userCollectionsBloc;
 
   @override
   void initState() {
@@ -240,6 +242,9 @@ class _ProfileTabWidgetState extends State<_ProfileTabWidget>
     _userPhotoBloc.add(LoadUserPhotosPhotoListEvent(userName: widget.userName));
     _userLikesBloc = PhotoListBloc();
     _userLikesBloc.add(LoadUserLikesPhotoListEvent(userName: widget.userName));
+    _userCollectionsBloc = CollectionsListBloc();
+    _userCollectionsBloc
+        .add(LoadUserCollectionsListEvent(userName: widget.userName));
   }
 
   @override
@@ -248,6 +253,8 @@ class _ProfileTabWidgetState extends State<_ProfileTabWidget>
       appBar: AppBar(
         elevation: 0,
         backgroundColor: const Color(0x00ffffff),
+        actions: [],
+        leading: null,
         flexibleSpace: Column(
           children: [
             TabBar(
@@ -273,41 +280,38 @@ class _ProfileTabWidgetState extends State<_ProfileTabWidget>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          BlocProvider(
-            create: (context) {
-              return _userPhotoBloc;
-            },
-            child: PhotoGridWidget(),
-          ),
-          BlocProvider(
-            create: (context) {
-              return _userLikesBloc;
-            },
-            child: PhotoGridWidget(),
-          ),
-          _buildUserCollections(widget.userCollections),
+          _buildUserPhoto(),
+          _buildUserLikes(),
+          _buildUserCollections(),
         ],
       ),
     );
   }
 
-  _buildUserCollections(CollectionsList userCollections) {
-    return Center(
-      child: GridView.count(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        padding: EdgeInsets.all(10.0),
-        children: List.generate(
-          userCollections.collections.length,
-          (index) => PhotoWidget(
-            photoLink: userCollections.collections[index].coverPhoto.urls.small,
-            paddingHorizontal: 0.0,
-            paddingVertical: 0.0,
-            isRect: true,
-          ),
-        ),
-      ),
+  _buildUserPhoto() {
+    return BlocProvider(
+      create: (context) {
+        return _userPhotoBloc;
+      },
+      child: PhotoGridWidget(),
+    );
+  }
+
+  _buildUserLikes() {
+    return BlocProvider(
+      create: (context) {
+        return _userLikesBloc;
+      },
+      child: PhotoGridWidget(),
+    );
+  }
+
+  _buildUserCollections() {
+    return BlocProvider(
+      create: (context) {
+        return _userCollectionsBloc;
+      },
+      child: CollectionsGridWidget(),
     );
   }
 }

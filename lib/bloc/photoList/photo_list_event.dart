@@ -1,6 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-abstract class PhotoListEvent {}
+abstract class PhotoListEvent extends Equatable {
+  @override
+  List<Object> get props => [];
+}
 
 class LoadRandomPhotoListEvent extends PhotoListEvent {}
 
@@ -20,6 +24,16 @@ class LoadUserLikesPhotoListEvent extends PhotoListEvent {
 
   LoadUserLikesPhotoListEvent({
     @required this.userName,
+    this.perPage = 9,
+  });
+}
+
+class LoadCollectionPhotoListEvent extends PhotoListEvent {
+  final String collectionId;
+  final int perPage;
+
+  LoadCollectionPhotoListEvent({
+    @required this.collectionId,
     this.perPage = 9,
   });
 }

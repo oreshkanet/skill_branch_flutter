@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/screens/collection_screen.dart';
 import 'package:FlutterGalleryApp/screens/home.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:FlutterGalleryApp/screens/user_profile_screen.dart';
@@ -46,6 +47,19 @@ class MyApp extends StatelessWidget {
           final route = UserProfileScreen(
             heroTag: args.heroTag,
             userName: args.userName,
+          );
+          if (Platform.isAndroid) {
+            return MaterialPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
+          } else if (Platform.isIOS) {
+            return CupertinoPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
+          }
+        } else if (settings.name == '/collection') {
+          CollectionScreenArguments args =
+              settings.arguments as CollectionScreenArguments;
+          final route = CollectionScreen(
+            collectionId: args.collectionId,
           );
           if (Platform.isAndroid) {
             return MaterialPageRoute(

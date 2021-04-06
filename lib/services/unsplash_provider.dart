@@ -122,7 +122,7 @@ class UnsplashProvider {
   }
 
   Future<PhotoList> getCollectionPhotos(
-      int collectionId, int page, int perPage) async {
+      String collectionId, int page, int perPage) async {
     var response = await http.get(
         'https://api.unsplash.com/collections/$collectionId/photos?page=$page&per_page=$perPage',
         headers: {'Authorization': 'Bearer $authToken'});

@@ -4,8 +4,8 @@ import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 
 class UnsplashRepository {
   // FIXME: Переписать Unsplashprovider на Dio
-  //final UnsplashProvider _provider = UnsplashProvider();
-  final SamplesProvider _provider = SamplesProvider();
+  final UnsplashProvider _provider = UnsplashProvider();
+  //final SamplesProvider _provider = SamplesProvider();
 
   //ME
 
@@ -30,7 +30,7 @@ class UnsplashRepository {
       _provider.getPhotos(page, perPage);
 
   Future<PhotoList> getCollectionPhotos(
-          int collectionId, int page, int perPage) =>
+          String collectionId, int page, int perPage) =>
       _provider.getCollectionPhotos(collectionId, page, perPage);
 
   Future<PhotoSearch> searchPhotos(String keyword, int page, int perPage) =>
