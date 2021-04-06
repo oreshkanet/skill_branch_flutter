@@ -1,5 +1,4 @@
-import 'package:FlutterGalleryApp/bloc/profile/profile_bloc.dart';
-import 'package:FlutterGalleryApp/bloc/profile/profile_event.dart';
+import 'package:FlutterGalleryApp/bloc/bloc.dart';
 import 'package:FlutterGalleryApp/res/colors.dart';
 import 'package:FlutterGalleryApp/widgets/profile.dart';
 import 'package:flutter/cupertino.dart';

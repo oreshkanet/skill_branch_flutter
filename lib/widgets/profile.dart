@@ -1,7 +1,4 @@
-import 'package:FlutterGalleryApp/bloc/photoList/photo_list_bloc.dart';
-import 'package:FlutterGalleryApp/bloc/photoList/photo_list_event.dart';
-import 'package:FlutterGalleryApp/bloc/profile/pofile_state.dart';
-import 'package:FlutterGalleryApp/bloc/profile/profile_bloc.dart';
+import 'package:FlutterGalleryApp/bloc/bloc.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';

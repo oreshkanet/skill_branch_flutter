@@ -1,5 +1,4 @@
-import 'package:FlutterGalleryApp/bloc/photoList/photo_list_bloc.dart';
-import 'package:FlutterGalleryApp/bloc/photoList/photo_list_state.dart';
+import 'package:FlutterGalleryApp/bloc/bloc.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
-import 'package:FlutterGalleryApp/bloc/profile/pofile_state.dart';
 import 'package:FlutterGalleryApp/bloc/profile/profile_event.dart';
+import 'package:FlutterGalleryApp/bloc/profile/profile_state.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:bloc/bloc.dart';

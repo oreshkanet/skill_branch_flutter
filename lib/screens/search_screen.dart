@@ -1,6 +1,4 @@
 import 'package:FlutterGalleryApp/bloc/bloc.dart';
-import 'package:FlutterGalleryApp/bloc/search_bloc.dart';
-import 'package:FlutterGalleryApp/bloc/search_event.dart';
 import 'package:FlutterGalleryApp/color_converter.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/res/app_icons.dart';
