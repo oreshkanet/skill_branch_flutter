@@ -2718,6 +2718,10 @@ class SamplesProvider {
     ]);
   }
 
+  Future<PhotoList> getCollectionPhotos(
+          int collectionId, int page, int perPage) =>
+      getPhotos(page, perPage);
+
   Future<PhotoSearch> searchPhotos(
       String keyword, int page, int perPage) async {
     return PhotoSearch.fromJson({

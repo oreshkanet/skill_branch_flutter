@@ -29,6 +29,10 @@ class UnsplashRepository {
   Future<PhotoList> getPhotos(int page, int perPage) =>
       _provider.getPhotos(page, perPage);
 
+  Future<PhotoList> getCollectionPhotos(
+          int collectionId, int page, int perPage) =>
+      _provider.getCollectionPhotos(collectionId, page, perPage);
+
   Future<PhotoSearch> searchPhotos(String keyword, int page, int perPage) =>
       _provider.searchPhotos(keyword, page, perPage);
 

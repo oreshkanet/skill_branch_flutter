@@ -121,6 +121,19 @@ class UnsplashProvider {
     }
   }
 
+  Future<PhotoList> getCollectionPhotos(
+      int collectionId, int page, int perPage) async {
+    var response = await http.get(
+        'https://api.unsplash.com/collections/$collectionId/photos?page=$page&per_page=$perPage',
+        headers: {'Authorization': 'Bearer $authToken'});
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return PhotoList.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Error: ${response.reasonPhrase}');
+    }
+  }
+
   Future<PhotoSearch> searchPhotos(
       String keyword, int page, int perPage) async {
     var response = await http.get(
