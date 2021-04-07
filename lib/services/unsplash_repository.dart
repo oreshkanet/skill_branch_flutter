@@ -4,8 +4,8 @@ import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 
 class UnsplashRepository {
   // FIXME: Переписать Unsplashprovider на Dio
-  final UnsplashProvider _provider = UnsplashProvider();
-  //final SamplesProvider _provider = SamplesProvider();
+  //final UnsplashProvider _provider = UnsplashProvider();
+  final SamplesProvider _provider = SamplesProvider();
 
   //ME
 
