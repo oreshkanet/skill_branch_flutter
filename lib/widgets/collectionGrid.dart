@@ -17,6 +17,8 @@ class CollectionsGridWidget extends StatefulWidget {
 }
 
 class _CollectionsGridWidgetState extends State<CollectionsGridWidget> {
+  _CollectionsGridWidgetState();
+
   CollectionsListBloc _collectionsListBloc;
 
   @override
@@ -57,35 +59,42 @@ class _CollectionsGridWidgetState extends State<CollectionsGridWidget> {
 
   _buildCollectionsList(CollectionsList collectionsList) {
     return Center(
-      child: GridView.count(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        padding: EdgeInsets.all(10.0),
-        children: List.generate(
-          collectionsList.collections.length,
-          (index) => GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/collection',
-                arguments: CollectionScreenArguments(
-                  routeSettings: RouteSettings(
-                    arguments: 'Collection',
+      child: RefreshIndicator(
+        child: GridView.count(
+          physics: const AlwaysScrollableScrollPhysics(),
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          padding: EdgeInsets.all(10.0),
+          children: List.generate(
+            collectionsList.collections.length,
+            (index) => GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/collection',
+                  arguments: CollectionScreenArguments(
+                    routeSettings: RouteSettings(
+                      arguments: 'Collection',
+                    ),
+                    collectionId: collectionsList.collections[index].id,
                   ),
-                  collectionId: collectionsList.collections[index].id,
-                ),
-              );
-            },
-            child: PhotoWidget(
-              photoLink:
-                  collectionsList.collections[index].coverPhoto.urls.small,
-              paddingHorizontal: 0.0,
-              paddingVertical: 0.0,
-              isRect: true,
+                );
+              },
+              child: PhotoWidget(
+                photoLink:
+                    collectionsList.collections[index].coverPhoto.urls.small,
+                paddingHorizontal: 0.0,
+                paddingVertical: 0.0,
+                isRect: true,
+              ),
             ),
           ),
         ),
+        onRefresh: () async {
+          _collectionsListBloc.add(ReloadCollectionsListEvent());
+          await _collectionsListBloc.first;
+        },
       ),
     );
   }

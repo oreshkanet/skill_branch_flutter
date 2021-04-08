@@ -100,7 +100,39 @@ class PhotoListBloc extends Bloc<PhotoListEvent, PhotoListState> {
         }
       }
 
-      //FIXME:  ReloadPhotoListEvent
+      if (event is ReloadPhotoListEvent) {
+        if (currentState is LoadedPhotoListState) {
+          LoadedPhotoListState newState = LoadedPhotoListState(
+            photoList: null,
+            type: currentState.type,
+            id: currentState.id,
+            currPage: 1,
+            perPage: currentState.perPage,
+          );
+
+          if (newState.type == PhotoListType.userPhotos) {
+            newState.photoList = await _repository.getUserPhotos(
+              newState.id,
+              newState.perPage,
+            );
+          } else if (newState.type == PhotoListType.userLikes) {
+            newState.photoList = await _repository.getUserLikes(
+              newState.id,
+              newState.perPage,
+            );
+          } else if (newState.type == PhotoListType.collectionPhotos) {
+            newState.photoList = await _repository.getCollectionPhotos(
+              newState.id,
+              newState.currPage,
+              newState.perPage,
+            );
+          }
+          newState.lastPage =
+              (newState.photoList.photos.length < newState.perPage);
+
+          yield newState;
+        }
+      }
     } catch (_, stackTrace) {
       developer.log('$_',
           name: 'ProfileBloc', error: _, stackTrace: stackTrace);

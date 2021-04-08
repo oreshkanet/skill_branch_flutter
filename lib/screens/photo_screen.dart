@@ -385,6 +385,7 @@ class _PhotoScreenState extends State<PhotoScreen>
               height: MediaQuery.of(context).size.width / 4,
               child: PhotoWidget(
                 photoLink: photoList[index].urls.small,
+                isRect: true,
               ));
         },
         childCount: photoList.length,

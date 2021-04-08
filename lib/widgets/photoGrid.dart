@@ -67,27 +67,33 @@ class _PhotoGridWidgetState extends State<PhotoGridWidget> {
   _buildPhotoList(LoadedPhotoListState state) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            if (index < state.photoList.photos.length) {
-              return _buildPhotoListItem(state.photoList.photos[index]);
-            } else {
-              _photoListBloc.add(LoadMorePhotoListEvent());
-              return _buildPhotoListProgressIndicator();
-            }
-          },
-          controller: _scrollController,
-          itemCount: state.lastPage
-              ? state.photoList.photos.length
-              : state.photoList.photos.length + 1,
-        ),
-      ),
+          padding: EdgeInsets.all(10.0),
+          child: RefreshIndicator(
+            child: GridView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                if (index < state.photoList.photos.length) {
+                  return _buildPhotoListItem(state.photoList.photos[index]);
+                } else {
+                  _photoListBloc.add(LoadMorePhotoListEvent());
+                  return _buildPhotoListProgressIndicator();
+                }
+              },
+              controller: _scrollController,
+              itemCount: state.lastPage
+                  ? state.photoList.photos.length
+                  : state.photoList.photos.length + 1,
+            ),
+            onRefresh: () async {
+              _photoListBloc.add(ReloadPhotoListEvent());
+              await _photoListBloc.first;
+            },
+          )),
     );
   }
 
