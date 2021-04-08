@@ -66,7 +66,7 @@ class _FeedState extends State<Feed> {
             return Center(
               child: Opacity(
                 opacity: isLoading ? 1 : 0,
-                child: CircularProgressIndicator(),
+                child: ProgressIndicatorWidget(),
               ),
             );
           }

@@ -2,6 +2,7 @@ import 'package:FlutterGalleryApp/bloc/bloc.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/screens/collection_screen.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';
+import 'package:FlutterGalleryApp/widgets/progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,9 +52,7 @@ class _CollectionsGridWidgetState extends State<CollectionsGridWidget> {
   }
 
   _buildLoadingCollectionsList() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(child: ProgressIndicatorWidget());
   }
 
   _buildCollectionsList(CollectionsList collectionsList) {

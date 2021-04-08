@@ -2,6 +2,7 @@ import 'package:FlutterGalleryApp/bloc/bloc.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';
+import 'package:FlutterGalleryApp/widgets/progress_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,9 +61,7 @@ class _PhotoGridWidgetState extends State<PhotoGridWidget> {
   }
 
   _buildLoadingPhotoList() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(child: ProgressIndicatorWidget());
   }
 
   _buildPhotoList(LoadedPhotoListState state) {
@@ -122,7 +121,7 @@ class _PhotoGridWidgetState extends State<PhotoGridWidget> {
 
   _buildPhotoListProgressIndicator() {
     return Center(
-      child: CircularProgressIndicator(),
+      child: ProgressIndicatorWidget(),
     );
   }
 }

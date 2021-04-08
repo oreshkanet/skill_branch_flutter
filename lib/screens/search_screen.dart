@@ -120,7 +120,7 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
         } else if (state is SearchLoadedState) {
           return _buildListView(context, state);
         } else if (state is SearchLoadingState) {
-          return CircularProgressIndicator();
+          return Center(child: widgets.ProgressIndicatorWidget());
         } else {
           return Center(child: Text("empty"));
         }
@@ -167,9 +167,7 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
   }
 
   Widget _buildBottomLoader() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(child: widgets.ProgressIndicatorWidget());
   }
 
   Widget _buildRow111(Photo photoItem1, Photo photoItem2, Photo photoItem3) {

@@ -4,6 +4,7 @@ import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/widgets/collectionGrid.dart';
 import 'package:FlutterGalleryApp/widgets/photo.dart';
 import 'package:FlutterGalleryApp/widgets/photoGrid.dart';
+import 'package:FlutterGalleryApp/widgets/progress_indicator.dart';
 import 'package:FlutterGalleryApp/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +63,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   _buildLoadingProfile() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(child: ProgressIndicatorWidget());
   }
 
   _buildProfile(

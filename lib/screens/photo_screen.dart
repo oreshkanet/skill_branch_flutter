@@ -360,12 +360,13 @@ class _PhotoScreenState extends State<PhotoScreen>
                 paddingHorizontal: 0,
                 paddingVertical: 0,
                 borderRadius: 7,
+                isRect: true,
               );
             }).toList(),
           );
         }
 
-        return CircularProgressIndicator();
+        return Center(child: ProgressIndicatorWidget());
       },
     );
   }
