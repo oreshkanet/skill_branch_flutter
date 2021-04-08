@@ -76,6 +76,30 @@ class PhotoListBloc extends Bloc<PhotoListEvent, PhotoListState> {
         );
       }
 
+      if (event is LoadMorePhotoListEvent) {
+        yield LoadingPhotoListState();
+
+        if (currentState is LoadedPhotoListState) {
+          if (currentState.lastPage) {
+            yield currentState;
+            return;
+          }
+          if (currentState.type == PhotoListType.collectionPhotos) {
+            currentState.currPage++;
+            final PhotoList _result = await _repository.getCollectionPhotos(
+              currentState.id,
+              currentState.currPage,
+              currentState.perPage,
+            );
+            currentState.lastPage =
+                (_result.photos.length < currentState.perPage);
+            currentState.photoList.photos += _result.photos;
+          }
+          yield currentState;
+          return;
+        }
+      }
+
       //FIXME:  ReloadPhotoListEvent
     } catch (_, stackTrace) {
       developer.log('$_',

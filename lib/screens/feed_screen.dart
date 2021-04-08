@@ -89,8 +89,8 @@ class _FeedState extends State<Feed> {
           onTap: () {
             Navigator.pushNamed(
               context,
-              '/fullScreenImage',
-              arguments: FullScreenImageArguments(
+              '/photoScreen',
+              arguments: PhotoScreenArguments(
                 routeSettings: RouteSettings(
                   arguments: 'Photo',
                 ),

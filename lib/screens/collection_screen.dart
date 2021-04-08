@@ -31,7 +31,7 @@ class CollectionScreen extends StatelessWidget {
           _photoListBloc.add(
             LoadCollectionPhotoListEvent(
               collectionId: collectionId,
-              perPage: 20,
+              perPage: 18,
             ),
           );
           return _photoListBloc;

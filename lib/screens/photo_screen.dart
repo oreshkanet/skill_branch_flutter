@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:FlutterGalleryApp/models/models.dart' as models;
 
-class FullScreenImageArguments {
-  FullScreenImageArguments({
+class PhotoScreenArguments {
+  PhotoScreenArguments({
     this.heroTag,
     this.photoItem,
     this.key,
@@ -22,8 +22,8 @@ class FullScreenImageArguments {
   final RouteSettings routeSettings;
 }
 
-class FullScreenImage extends StatefulWidget {
-  FullScreenImage({
+class PhotoScreen extends StatefulWidget {
+  PhotoScreen({
     this.heroTag,
     this.photoItem,
     Key key,
@@ -34,11 +34,11 @@ class FullScreenImage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _FullScreenImageState();
+    return _PhotoScreenState();
   }
 }
 
-class _FullScreenImageState extends State<FullScreenImage>
+class _PhotoScreenState extends State<PhotoScreen>
     with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> opacityUserAvatar;

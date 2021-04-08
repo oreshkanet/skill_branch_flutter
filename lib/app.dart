@@ -26,10 +26,10 @@ class MyApp extends StatelessWidget {
         textTheme: buildAppTextTheme(),
       ),
       onGenerateRoute: (RouteSettings settings) {
-        if (settings.name == '/fullScreenImage') {
-          FullScreenImageArguments args =
-              settings.arguments as FullScreenImageArguments;
-          final route = FullScreenImage(
+        if (settings.name == '/photoScreen') {
+          PhotoScreenArguments args =
+              settings.arguments as PhotoScreenArguments;
+          final route = PhotoScreen(
             heroTag: args.heroTag,
             photoItem: args.photoItem,
             key: args.key,

@@ -1073,13 +1073,13 @@ class SamplesProvider {
 
   Future<PhotoList> getCollectionPhotos(
       String collectionId, int page, int perPage) async {
-    await Future.delayed(Duration(seconds: 1));
+    //await Future.delayed(Duration(seconds: 1));
 
     PhotoList photos = photoList();
 
     Random rnd = Random();
     int maxId = rnd.nextInt(perPage * 4);
-    int lastId = min(perPage - 1, maxId - 1);
+    int lastId = min(perPage, maxId);
     lastId = min(lastId, photos.photos.length);
     photos.photos = photos.photos.sublist(0, lastId);
 

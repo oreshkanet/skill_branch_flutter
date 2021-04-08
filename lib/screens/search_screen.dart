@@ -252,8 +252,8 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
       onTap: () {
         Navigator.pushNamed(
           context,
-          '/fullScreenImage',
-          arguments: FullScreenImageArguments(
+          '/photoScreen',
+          arguments: PhotoScreenArguments(
             routeSettings: RouteSettings(
               arguments: 'Photo',
             ),
