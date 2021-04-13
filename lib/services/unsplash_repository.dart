@@ -3,6 +3,12 @@ import 'package:FlutterGalleryApp/services/samples_provider.dart';
 import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 
 class UnsplashRepository {
+  static final UnsplashRepository _repository = UnsplashRepository._internal();
+  factory UnsplashRepository() {
+    return _repository;
+  }
+  UnsplashRepository._internal() : super();
+
   // FIXME: Переписать Unsplashprovider на Dio
   final UnsplashProvider _provider = UnsplashProvider();
   //final SamplesProvider _provider = SamplesProvider();

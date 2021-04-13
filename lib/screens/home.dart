@@ -136,14 +136,15 @@ class _HomeState extends State<Home> {
     return Center(
       child: widgets.ButtonWidget(
         text: "Login",
-        onTap: () {
-          Navigator.pushNamed(
+        onTap: () async {
+          await Navigator.pushNamed(
             context,
             '/login',
             arguments: LoginScreenArguments(
               routeSettings: RouteSettings(),
             ),
           );
+          setState(() {});
         },
       ),
     );
