@@ -3,12 +3,25 @@ import 'dart:async';
 import 'package:FlutterGalleryApp/res/bottom_nav_icons_icons.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:FlutterGalleryApp/screens/login_screen.dart';
 import 'package:FlutterGalleryApp/screens/profile_screen.dart';
 import 'package:FlutterGalleryApp/screens/search_screen.dart';
+import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:FlutterGalleryApp/app.dart';
+import 'package:FlutterGalleryApp/widgets/widgets.dart' as widgets;
+
+class HomeScreenArguments {
+  HomeScreenArguments({
+    this.onConnectivityChanged,
+    this.key,
+  });
+
+  final Stream<ConnectivityResult> onConnectivityChanged;
+  final Key key;
+}
 
 class Home extends StatefulWidget {
   Home(this.onConnectivityChanged);
@@ -23,15 +36,17 @@ class _HomeState extends State<Home> {
   StreamSubscription subscription;
 
   int currentTab = 0;
-  List<Widget> padges = [
-    Feed(),
-    SearchScreen(),
-    ProfileScreen(),
-  ];
+  List<Widget> padges;
 
   @override
   void initState() {
     super.initState();
+
+    padges = <Widget>[
+      _buildLogin(),
+      _buildLogin(),
+      _buildLogin(),
+    ];
 
     subscription = widget.onConnectivityChanged.listen(
       (ConnectivityResult result) {
@@ -66,6 +81,13 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    if (UnsplashRepository().isLogged()) {
+      padges = [
+        Feed(),
+        SearchScreen(),
+        ProfileScreen(),
+      ];
+    }
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -106,6 +128,23 @@ class _HomeState extends State<Home> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildLogin() {
+    return Center(
+      child: widgets.ButtonWidget(
+        text: "Login",
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            '/login',
+            arguments: LoginScreenArguments(
+              routeSettings: RouteSettings(),
+            ),
+          );
+        },
       ),
     );
   }

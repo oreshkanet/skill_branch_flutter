@@ -20,25 +20,40 @@ import 'package:http/http.dart' as http;
 
 class UnsplashProvider {
   static const String _appId = "184537"; //not used, just for info
-  static String authToken =
-      "H5KSJVe71H16Rn8ZIaeBUy8KVn3pjKhTTAjAhwduaXc"; //"NiAm1niaD6t0uNrInTGR27UmSXSMvDNAluvb52SqT3U";
   static const String _accessKey =
       'uYpsEMuU_nKS3PsUYbTpYZQbvR8Rdma3IbTQR7k0o8w'; //app access key from console
   static const String _secretKey =
       'iQ14YRenJXs9jbNAn632iW-dRPOuRPxRAYnEfwqWEes'; //app secrey key from console
-  static const String authUrl =
+  static const String _authUrl =
       'https://unsplash.com/oauth/authorize?client_id=$_accessKey&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=public+write_likes'; //authorize url from https://unsplash.com/oauth/applications/{your_app_id}
 
-  static Future<Auth> doLogin({String oneTimeCode}) async {
-    var response = await http.post('https://unsplash.com/oauth/token',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body:
-            '{"client_id":"$_accessKey","client_secret":"$_secretKey","redirect_uri":"urn:ietf:wg:oauth:2.0:oob","code":"$oneTimeCode","grant_type":"authorization_code"}');
+  static String _defaultAuthToken =
+      "H5KSJVe71H16Rn8ZIaeBUy8KVn3pjKhTTAjAhwduaXc"; //"NiAm1niaD6t0uNrInTGR27UmSXSMvDNAluvb52SqT3U";
+
+  String authToken = "";
+
+  bool isLogged() {
+    return (authToken != "");
+  }
+
+  String getLoginUrl() => _authUrl;
+
+  Future<void> doLogin({String oneTimeCode}) async {
+    RegExp exp = RegExp("(?<==).*");
+    oneTimeCode = exp.stringMatch(oneTimeCode);
+
+    var response = await http.post(
+      'https://unsplash.com/oauth/token',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body:
+          '{"client_id":"$_accessKey","client_secret":"$_secretKey","redirect_uri":"urn:ietf:wg:oauth:2.0:oob","code":"$oneTimeCode","grant_type":"authorization_code"}',
+    );
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return Auth.fromJson(json.decode(response.body));
+      var auth = Auth.fromJson(json.decode(response.body));
+      this.authToken = auth.accessToken;
     } else {
       throw Exception('Error: ${response.reasonPhrase}');
     }
@@ -182,7 +197,7 @@ class UnsplashProvider {
     }
   }
 
-  static Future<bool> likePhoto(String photoId) async {
+  Future<bool> likePhoto(String photoId) async {
     var response = await http
         .post('https://api.unsplash.com/photos/$photoId/like', headers: {
       'Authorization': 'Bearer $authToken',
@@ -198,7 +213,7 @@ class UnsplashProvider {
     }
   }
 
-  static Future<bool> unlikePhoto(String photoId) async {
+  Future<bool> unlikePhoto(String photoId) async {
     var response = await http
         .delete('https://api.unsplash.com/photos/$photoId/like', headers: {
       'Authorization': 'Bearer $authToken',

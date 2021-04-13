@@ -3,6 +3,10 @@ import 'dart:math';
 import 'package:FlutterGalleryApp/models/models.dart';
 
 class SamplesProvider {
+  Future<void> doLogin({String oneTimeCode}) async {}
+  bool isLogged() => true;
+  String getLoginUrl() => "";
+
   // ME
   Future<User> getMe() async {
     await Future.delayed(Duration(seconds: 1));

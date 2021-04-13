@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/collection_screen.dart';
 import 'package:FlutterGalleryApp/screens/home.dart';
+import 'package:FlutterGalleryApp/screens/login_screen.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:FlutterGalleryApp/screens/user_profile_screen.dart';
 import 'package:connectivity/connectivity.dart';
@@ -61,6 +62,17 @@ class MyApp extends StatelessWidget {
           final route = CollectionScreen(
             collectionId: args.collectionId,
           );
+          if (Platform.isAndroid) {
+            return MaterialPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
+          } else if (Platform.isIOS) {
+            return CupertinoPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
+          }
+        } else if (settings.name == '/login') {
+          LoginScreenArguments args =
+              settings.arguments as LoginScreenArguments;
+          final route = LoginScreen();
           if (Platform.isAndroid) {
             return MaterialPageRoute(
                 builder: (context) => route, settings: args.routeSettings);

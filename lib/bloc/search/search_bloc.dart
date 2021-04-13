@@ -27,7 +27,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (event is SearchStartEvent) {
       yield SearchLoadingState();
       try {
-        throw Error();
         final PhotoSearch _loadedPhotoList = await repository.searchPhotos(
           event.keyword,
           0,
