@@ -1,9 +1,8 @@
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/user_profile_screen.dart';
-import 'package:FlutterGalleryApp/services/unsplash_provider.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:FlutterGalleryApp/widgets/claim_bottom_sheet.dart';
-import 'package:FlutterGalleryApp/widgets/widgets.dart';
+import 'package:FlutterGalleryApp/widgets/widgets.dart' as widgets;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
@@ -107,8 +106,8 @@ class _PhotoScreenState extends State<PhotoScreen>
                 children: <Widget>[
                   Hero(
                     tag: widget.heroTag,
-                    child:
-                        PhotoWidget(photoLink: widget.photoItem.urls.regular),
+                    child: widgets.PhotoWidget(
+                        photoLink: widget.photoItem.urls.regular),
                   ),
                   const SizedBox(height: 10),
                   _buildPhotoDescription(),
@@ -206,7 +205,7 @@ class _PhotoScreenState extends State<PhotoScreen>
             child: GestureDetector(
               child: Hero(
                 tag: userHeroTag + '_avatar',
-                child: UserAvatarWidget(
+                child: widgets.UserAvatarWidget(
                     avatarLink: widget.photoItem.user.profileImage.medium),
               ),
               onTap: () {
@@ -257,7 +256,7 @@ class _PhotoScreenState extends State<PhotoScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          LikeButton(2157, false),
+          widgets.LikeButton(2157, false),
           const SizedBox(width: 12),
           _buildButton('Save', () {
             showDialog(
@@ -318,6 +317,11 @@ class _PhotoScreenState extends State<PhotoScreen>
   }
 
   Widget _buildButton(String text, VoidCallback callback) {
+    return widgets.ButtonWidget(
+      text: text,
+      onTap: callback,
+    );
+    /*
     return GestureDetector(
       onTap: callback,
       child: Container(
@@ -338,6 +342,7 @@ class _PhotoScreenState extends State<PhotoScreen>
         ),
       ),
     );
+    */
   }
 
   Widget _buildRandom() {
@@ -355,7 +360,7 @@ class _PhotoScreenState extends State<PhotoScreen>
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             children: snapshot.data.photos.map((models.Photo photoItem) {
-              return PhotoWidget(
+              return widgets.PhotoWidget(
                 photoLink: photoItem.urls.small,
                 paddingHorizontal: 0,
                 paddingVertical: 0,
@@ -366,7 +371,7 @@ class _PhotoScreenState extends State<PhotoScreen>
           );
         }
 
-        return Center(child: ProgressIndicatorWidget());
+        return Center(child: widgets.ProgressIndicatorWidget());
       },
     );
   }
@@ -383,7 +388,7 @@ class _PhotoScreenState extends State<PhotoScreen>
         (BuildContext context, int index) {
           return Container(
               height: MediaQuery.of(context).size.width / 4,
-              child: PhotoWidget(
+              child: widgets.PhotoWidget(
                 photoLink: photoList[index].urls.small,
                 isRect: true,
               ));
