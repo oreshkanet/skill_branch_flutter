@@ -23,4 +23,10 @@ class SearchLoadedState extends SearchState {
   }) : assert(photoList != null);
 }
 
-class SearchErrorState extends SearchState {}
+class SearchErrorState extends SearchState {
+  final String errorText;
+
+  SearchErrorState({
+    @required this.errorText,
+  });
+}

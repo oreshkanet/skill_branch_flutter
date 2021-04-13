@@ -116,7 +116,7 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
         if (state is SearchEmptyState) {
           return Center(child: Text("empty"));
         } else if (state is SearchErrorState) {
-          return Center(child: Text("empty"));
+          return _buildError(state.errorText);
         } else if (state is SearchLoadedState) {
           return _buildListView(context, state);
         } else if (state is SearchLoadingState) {
@@ -162,6 +162,15 @@ class _SearchPhotoListState extends State<_SearchPhotoList> {
         itemCount: (state.currPage == state.maxPage)
             ? (state.photoList.length ~/ 3)
             : (state.photoList.length ~/ 3) + 1,
+      ),
+    );
+  }
+
+  Widget _buildError(String errorText) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: widgets.ErrorWidget(
+        errorText: errorText,
       ),
     );
   }

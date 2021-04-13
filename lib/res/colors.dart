@@ -14,4 +14,6 @@ class AppColors {
   static const Color grayButton = Color(0xFFF5F5F8);
 
   static const Color textGray1 = Color(0xFF919BA8);
+
+  static const Color errorBackground = amaranth;
 }

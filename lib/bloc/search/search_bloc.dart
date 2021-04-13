@@ -3,6 +3,7 @@ import 'package:FlutterGalleryApp/bloc/search/search_state.dart';
 import 'package:FlutterGalleryApp/models/models.dart';
 import 'package:FlutterGalleryApp/services/unsplash_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:FlutterGalleryApp/res/res.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final UnsplashRepository repository = UnsplashRepository();
@@ -18,7 +19,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     await super.close();
   }
 
-  @override
   SearchState get initialState => SearchEmptyState();
 
   @override
@@ -27,6 +27,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (event is SearchStartEvent) {
       yield SearchLoadingState();
       try {
+        throw Error();
         final PhotoSearch _loadedPhotoList = await repository.searchPhotos(
           event.keyword,
           0,
@@ -40,7 +41,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           maxPage: _loadedPhotoList.totalPages,
         );
       } catch (_) {
-        yield SearchErrorState();
+        yield SearchErrorState(errorText: AppMessages.errorSearch);
       }
     } else if (event is SearchLoadEvent) {
       yield SearchLoadingState();
@@ -61,10 +62,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
           yield currentState;
         } else {
-          yield SearchErrorState();
+          yield SearchErrorState(errorText: AppMessages.errorSearch);
         }
       } catch (_) {
-        yield SearchErrorState();
+        yield SearchErrorState(errorText: AppMessages.errorSearch);
       }
     } else if (event is SearchCancelEvent) {
       yield SearchEmptyState();
